@@ -1,0 +1,31 @@
+<% milestone = locals[:milestone]%>
+<% project = locals[:project]%>
+<% f = locals[:form]%>
+  <% if milestone.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(milestone.errors.count, "error") %> prohibited this milestone from being saved:</h2>
+
+      <ul>
+      <% milestone.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :due_date %><br>
+    <%= f.date_select :due_date %>
+  </div>
+  <div class="actions">
+    <%= f.submit(class: 'button success small inline') %>
+  </div>
+

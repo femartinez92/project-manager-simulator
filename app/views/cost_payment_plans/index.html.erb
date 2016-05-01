@@ -1,0 +1,24 @@
+
+<h1>Listing Cost Payment Plans</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cost_payment_plans.each do |cost_payment_plan| %>
+      <tr>
+        <td><%= link_to 'Show', cost_payment_plan %></td>
+        <td><%= link_to 'Edit', edit_cost_payment_plan_path(cost_payment_plan) %></td>
+        <td><%= link_to 'Destroy', cost_payment_plan, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cost payment plan', new_cost_payment_plan_path %>

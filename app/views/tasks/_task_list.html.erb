@@ -1,0 +1,33 @@
+<% tasks = locals[:tasks]%>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Min (días) </th>
+      <th>Moda (días) </th>
+      <th>Max (días)</th>
+      <th>Estimación Jefe Proyecto (días)</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% tasks.each do |task| %>
+      <tr>
+        <td><%= task.name %></td>
+        <td><%= task.description %></td>
+        <td><%= task.min_duration %></td>
+        <td><%= task.most_probable_duration %></td>
+        <td><%= task.max_duration %></td>
+        <td><%= task.pm_duration_estimation %></td>
+        <td><ul class='button-group radius'>
+            <li><%= link_to 'Ver detalles', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button info tiny' }%></li>
+            <li><%= link_to 'Editar', edit_project_milestone_task_path({:project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button secondary tiny' }%></li>
+            <li><%= link_to 'Eliminar', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), class: 'button alert tiny' , method: :delete, data: { confirm: 'Estas seguro que deseas elimienar esta tarea?' }%></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,7 @@
+<h1>Editing Milestone</h1>
+
+<%= form_for(@milestone, url: project_milestone_path(@project, @milestone)) do |f| %>
+	<%= render 'form', :locals => {form: f, milestone: @milestone, project: @project}%>
+<% end %>
+<%= link_to 'Show', project_milestone_path({:project_id => params[:project_id], :id => params[:id]}) %> |
+<%= link_to 'Back', project_milestones_path %>

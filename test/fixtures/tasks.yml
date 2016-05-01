@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  min_duration: 1
+  most_probable_duration: 1
+  max_duration: 1
+  pm_duration_estimation: 1
+
+two:
+  name: MyString
+  description: MyText
+  min_duration: 1
+  most_probable_duration: 1
+  max_duration: 1
+  pm_duration_estimation: 1

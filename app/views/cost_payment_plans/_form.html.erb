@@ -1,0 +1,17 @@
+<%= form_for(@cost_payment_plan) do |f| %>
+  <% if @cost_payment_plan.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@cost_payment_plan.errors.count, "error") %> prohibited this cost_payment_plan from being saved:</h2>
+
+      <ul>
+      <% @cost_payment_plan.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit(class: 'button success small') %>
+  </div>
+<% end %>

@@ -1,0 +1,49 @@
+<% task = locals[:task] %>
+<% milestone = locals[:milestone] %>
+<% project = locals[:project] %>
+<% f = locals[:form] %>
+  <% if task.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+      <% task.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :min_duration %><br>
+    <%= f.number_field :min_duration %>
+  </div>
+  <div class="field">
+    <%= f.label :most_probable_duration %><br>
+    <%= f.number_field :most_probable_duration %>
+  </div>
+  <div class="field">
+    <%= f.label :max_duration %><br>
+    <%= f.number_field :max_duration %>
+  </div>
+  <div class="field">
+    <%= f.label :pm_duration_estimation %><br>
+    <%= f.number_field :pm_duration_estimation %>
+  </div>
+  <!-- Uncomment this in case you want to explicitly select the milestone
+  <div class="field">
+    <%= #f.select(:milestone_id, options_for_select(milestones, nil)) 
+    %>
+  </div>
+  -->
+  <div class="actions">
+    <%= f.submit(class: 'button success small') %>
+  </div>

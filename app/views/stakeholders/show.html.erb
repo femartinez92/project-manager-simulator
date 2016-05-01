@@ -1,0 +1,23 @@
+
+<p>
+  <strong>Name:</strong>
+  <%= @stakeholder.name %>
+</p>
+
+<p>
+  <strong>Commitment level:</strong>
+  <%= @stakeholder.commitment_level %>
+</p>
+
+<p>
+  <strong>Influence:</strong>
+  <%= @stakeholder.influence %>
+</p>
+
+<p>
+  <strong>Power:</strong>
+  <%= @stakeholder.power %>
+</p>
+
+<%= link_to 'Edit', edit_stakeholder_path(@stakeholder) %> |
+<%= link_to 'Back', stakeholders_path %>

@@ -23,6 +23,15 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# Use foundation
+gem 'foundation-rails'
+# Use devise for users
+gem 'devise'
+# For authorization levels
+gem 'cancancan'
+# For asigning roles
+gem 'rolify'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

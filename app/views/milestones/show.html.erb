@@ -1,0 +1,17 @@
+
+<p>
+  <h2><%= @milestone.name %></h2>
+  <strong> Fecha término: <%= @milestone.due_date %> </strong>
+</p>
+<p>
+  <h6> <%= @milestone.description %></h4>
+</p>
+
+<p>
+ 	<h4>Lista de actividades para lograrlo</h4>
+	<%= link_to 'Crear nueva actividad', new_project_milestone_task_path(@project, @milestone), { class: 'button success small' } %> 
+	<%= render 'tasks/task_list', :locals => {tasks: @tasks} %>
+</p>
+
+<%= link_to 'Edit', edit_project_milestone_path(@project, @milestone) %> |
+<%= link_to 'Back', project_milestones_path(@project) %>

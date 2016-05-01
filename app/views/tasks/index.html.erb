@@ -1,0 +1,8 @@
+
+<h1><%= @milestone.name%></h1>
+<h3>Lista de tareas</h3>
+<%= render 'task_list', :locals => {tasks: @tasks} %>
+
+<br>
+
+<%= link_to 'New Task', new_project_milestone_task_path %>

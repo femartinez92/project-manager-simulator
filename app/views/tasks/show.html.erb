@@ -1,0 +1,33 @@
+
+<p>
+  <strong>Name:</strong>
+  <%= @task.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @task.description %>
+</p>
+
+<p>
+  <strong>Min duration:</strong>
+  <%= @task.min_duration %>
+</p>
+
+<p>
+  <strong>Most probable duration:</strong>
+  <%= @task.most_probable_duration %>
+</p>
+
+<p>
+  <strong>Max duration:</strong>
+  <%= @task.max_duration %>
+</p>
+
+<p>
+  <strong>Pm duration estimation:</strong>
+  <%= @task.pm_duration_estimation %>
+</p>
+
+<%= link_to 'Edit', edit_project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => @task.id }) %> |
+<%= link_to 'Back', project_milestone_path(@project, @milestone) %>

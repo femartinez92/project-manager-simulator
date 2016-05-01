@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  commitment_level: 1
+  influence: 1
+  power: 1
+
+two:
+  name: MyString
+  commitment_level: 1
+  influence: 1
+  power: 1
