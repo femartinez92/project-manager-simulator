@@ -4,7 +4,9 @@ class CreateCostLines < ActiveRecord::Migration
       t.string :name
       t.string :description
       t.integer :amount
-      t.date :payment_date
+      t.integer :real_amount
+      t.integer :payment_week
+      t.integer :real_payment_week
 
       t.timestamps null: false
     end

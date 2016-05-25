@@ -1,39 +1,32 @@
 
 <p>
   <h1>
-  	<%= @project.name %>
+    <%= @project.name %>
   </h1>
 </p>
 
 <p>
-  <strong>Actual date:</strong>
-  <%= @project.actual_date %>
+  <strong>Semana Actual:</strong>
+  <%= @project.actual_week %>
+  <br>
+  <strong> Estado del proyecto: </strong>
+  <%= @project.status %>
+  <br>
+  <%- if @project.status == 'Inicio' %>
+
+  <% end -%>
 </p>
 
-<div class="row">
- <div class="large-12" id="costs">
- 	<h3> Evolución de costos </h1>
- 	<div class="large-9" id="cost_evolution" style="float: left">Gráfico</div>
- 	<div class="large-3" id="indicators" style="float: left">Indicadores</div>
-
- </div>
+<div class="panel radius row">
+  <%= render 'costs_panel', locals: { cost_lines: @cost_lines } %>
 </div>
-<div class="row float">
-	<div class="large-5" style="float: left">
-		<p> <%= link_to 'Hitos', project_milestones_path(@project) %></p>
-		<ul id="milestones">
-			<% @milestones.each do |milestone| %>
-				<li> <%= link_to milestone.name, project_milestone_path(@project, milestone) %> </li>
-			<% end -%>
-		</ul>
-	</div>
-	<div class="large-2"></div>
-	<div class="large-5" style="float: left">
-		<%= render 'stakeholders/stakeholders_list', :locals => {stakeholders: @stakeholders} %>
-	</div>
+<br>
+<div class="panel radius row float">
+  <div class="panel callout radius large-7 left">
+    <%= render 'stakeholders_panel' %>
+  </div>
+  <div class="panel callout radius large-4 right">
+    <%= render 'milestones_panel' %>
+  </div>
 </div>
-
-<%= #link_to 'Edit', edit_project_path(@project)
- %> 
-<%= #link_to 'Back', projects_path 
-%>
+<br>

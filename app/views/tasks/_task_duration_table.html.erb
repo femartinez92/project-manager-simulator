@@ -1,0 +1,16 @@
+<% task = locals[:task] %>
+
+  <table>
+    <tr>
+      <th>Min</th>
+      <th>Más probable</th>
+      <th>Max</th>
+      <th>Estimada</th>
+    </tr>
+    <tr>
+      <td> <%= @task.min_duration %> </td>
+      <td> <%= @task.most_probable_duration %> </td>
+      <td> <%= @task.max_duration %> </td>
+      <td> <%= @task.pm_duration_estimation %> </td>
+    </tr>
+  </table>

@@ -1,0 +1,18 @@
+<% cost_lines = locals[:cost_lines] %>
+<div class="large-12" id="costs">
+  <div class="row">
+    <div class="large-4 left">
+      <h3> Evolución de costos </h3>
+    </div>
+    <div class="large-8 left">
+      <%= link_to 'Administrar costos', project_costs_path(@project), class: 'button tiny info ' %>
+    </div>
+  </div>
+
+  <div class="large-7 left" id="cost_evolution">
+    <% sum = 0 %>
+    <%= line_chart cost_lines.group(:payment_week).sum(:amount).to_a.sort{|x,y| x[0] <=> y[0]}.map { |x,y| { x => (sum += y)} }.reduce({}, :merge) %>
+  </div>
+  <div class="large-4 right" id="indicators">Indicadores</div>
+
+ </div>

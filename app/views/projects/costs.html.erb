@@ -1,0 +1,34 @@
+<h1>Plan de pago</h1>
+  <%= link_to 'Atrás', project_path(@project), class: 'button secondary tiny' %>
+<table>
+  <thead>
+    <tr>
+      <th> Nombre </th>
+      <th> Descripcion </th>
+      <th> Monto estimado </th>
+      <th> Semana de pago estimada </th>
+      <th> Monto real </th>
+      <th> Semana de pago real</th>
+      <th> Fuente de financiamiento</th>
+      <th> Estado </th>
+
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cost_payment_plan.cost_lines.each do |cost_line| %>
+      <tr>
+        <td><%= cost_line.name %></td>
+        <td><%= cost_line.description %></td>
+        <td><%= cost_line.amount %></td>
+        <td><%= cost_line.payment_week %></td>
+        <td><%= cost_line.real_amount %></td>
+        <td><%= cost_line.real_payment_week %></td>
+        <td><%= cost_line.funding_source %></td>
+        <td><%= cost_line.status %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

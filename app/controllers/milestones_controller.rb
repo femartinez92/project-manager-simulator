@@ -1,17 +1,36 @@
 class MilestonesController < ApplicationController
   before_action :set_milestone, only: [:show, :edit, :update, :destroy]
-  before_action :set_project
+  before_action :set_project, :set_admin
   before_action :authenticate_project_manager!
   # GET /milestones
   # GET /milestones.json
   def index
     @milestones = @project.milestones
+    parent_project = Project.from_admin.where(name: @project.name).first
+    @posible_milestones = parent_project.milestones
+
   end
 
   # GET /milestones/1
   # GET /milestones/1.json
   def show
     @tasks = @milestone.tasks
+    source_milestone = Milestone.from_admin.where(name: @milestone.name).first
+    @posible_tasks = source_milestone.tasks
+  end
+
+  # Clone milestones
+  def clone
+    ids = params[:milestone_ids]
+    ids.each do |id|
+      milestone = Milestone.find(id).dup
+      milestone.project_id = params[:project_id]
+      milestone.is_admin_milestone = @admin
+      milestone.save
+    end
+    respond_to do |format|
+      format.html {redirect_to project_milestones_path(@project), notice: 'Hito agregado correctamente'}
+    end
   end
 
   # GET /milestones/new
@@ -28,6 +47,7 @@ class MilestonesController < ApplicationController
   def create
     @milestone = Milestone.new(milestone_params)
     @milestone.project_id = params[:project_id]
+    @milestone.is_admin_milestone = @admin
     respond_to do |format|
       if @milestone.save
         format.html { redirect_to project_milestones_path, notice: 'Milestone was successfully created.' }
@@ -63,6 +83,42 @@ class MilestonesController < ApplicationController
     end
   end
 
+  #### ----------- Precedent methods --------- ####
+  
+  # GET projects/1/precedents
+  def precedent_index
+    @tasks = @project.milestones.first.tasks
+    @project.milestones.each do |miles|
+      @tasks << miles.tasks
+    end
+    @precedents = Precedent.where(project_id: @project.id)
+    
+
+  end
+
+  # GET projects/1/precedents/new
+  def new_precedent
+    @tasks = @project.milestones.first.tasks
+    @project.milestones.each do |miles|
+      @tasks << miles.tasks
+    end
+  end
+
+  # POST projects/1/precedents
+  def create_precedent
+    p params[:predecessor_id]
+    predecessor = params[:predecessor_id].first
+    dependent_ids = params[:dependent_ids]
+    dependent_ids.each do |dependent|
+      precedent = Precedent.new(predecessor_id: predecessor, dependent_id: dependent, project_id: @project.id)
+      precedent.save
+    end
+    respond_to do |format|
+        format.html { redirect_to precedents_path(@project, @milestone, @task), notice: 'Dependencia creada corretamente' }
+        format.json { render :show, status: :created, location: @cost_line }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_milestone
@@ -75,6 +131,10 @@ class MilestonesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def milestone_params
-      params.require(:milestone).permit(:name, :description, :due_date)
+      params.require(:milestone).permit(:name, :description, :due_date, :fake)
+    end
+
+    def set_admin
+      @admin = current_project_manager.has_role? :admin
     end
 end

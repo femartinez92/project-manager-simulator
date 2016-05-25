@@ -1,34 +1,14 @@
-
-<h1>Listado de hitos</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Fecha de término</th>
-      <th colspan="3"> Acciones </th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @milestones.each do |milestone| %>
-      <tr>
-        <td><%= milestone.name %></td>
-        <td><%= milestone.description %></td>
-        <td><%= milestone.due_date %></td>
-        <td>
-          <ul class='button-group radius'>
-            <li><%= link_to 'Ver detalles', project_milestone_path({ :project_id => @project.id, :id => milestone.id}), { class: 'button info tiny' }%></li>
-            <li><%= link_to 'Editar', edit_project_milestone_path({ :id => milestone.id, :project_id => @project.id}), { class: 'button secondary tiny' }%></li>
-            <li><%= link_to 'Eliminar', project_milestone_path({ :id => milestone.id, :project_id => @project.id}), class: 'button alert tiny' , method: :delete, data: { confirm: 'Are you sure?' }%></li>
-          </ul>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<%- if @milestones.length > 0 %>
+  <%= render 'milestones_list', locals: { milestones: @milestones } %>
+<% end -%>
 <br>
-
-<%= link_to 'New Milestone', new_project_milestone_path %>
+ <%= link_to 'Ver precedencias de tareas', precedents_path, class: 'button tiny info' %>
+ <%= link_to 'Volver a proyecto', project_path(@project), class: 'button tiny secondary' %>
+<br>
+<%- if @project.modificable? and not(@admin)%>
+  <%= render 'add_milestones_list', locals: { milestones: @posible_milestones } %>
+<% end -%>
+<br>
+<%- if @admin %>
+  <%= link_to 'Agregar hito nuevo', new_project_milestone_path, class: 'button tiny info' %>
+<% end -%>

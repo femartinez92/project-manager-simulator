@@ -1,0 +1,30 @@
+<% milestones = locals[:milestones]%>
+<br>
+<h3> Agregar hitos </h3>
+<br>
+<p> Aquí puedes seleccionar los hitos que quieras agregar a tu proyecto, debes agregar sólo los hitos que encuentres necesarios para el éxito del proyecto.</p>
+<%= form_tag clone_milestones_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Fecha de término</th>
+      <th colspan="3"> Agregar hito? </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% milestones.each do |milestone| %>
+      <tr>
+        <td><%= milestone.name %></td>
+        <td><%= milestone.description %></td>
+        <td><%= milestone.due_date %></td>
+        <td>
+          <%= check_box_tag "milestone_ids[]", milestone.id %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= submit_tag "Agregar", class: "button tiny success" %>

@@ -23,7 +23,7 @@
         <td><%= task.pm_duration_estimation %></td>
         <td><ul class='button-group radius'>
             <li><%= link_to 'Ver detalles', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button info tiny' }%></li>
-            <li><%= link_to 'Editar', edit_project_milestone_task_path({:project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button secondary tiny' }%></li>
+            <li><%= link_to 'Estimar', edit_project_milestone_task_path({:project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button secondary tiny' }%></li>
             <li><%= link_to 'Eliminar', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), class: 'button alert tiny' , method: :delete, data: { confirm: 'Estas seguro que deseas elimienar esta tarea?' }%></li>
           </ul>
         </td>

@@ -127,7 +127,7 @@ $light-blue-2: #7CE6DE;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
 // $warning-color: #f08a24;
-// $info-color: #a0d3e8;
+ $info-color: darken($light-blue-1, 5%);
 
 // We use these to control various global styles
 // $body-bg: $white;

@@ -31,6 +31,10 @@ gem 'devise'
 gem 'cancancan'
 # For asigning roles
 gem 'rolify'
+# For charts
+gem 'chartkick', '~> 1.4.0'
+gem 'groupdate', '~> 2.1.1'
+gem 'active_median', '~> 0.1.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

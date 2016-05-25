@@ -1,0 +1,26 @@
+<p>
+	<h3>Lista de precedencias</h3>
+</p>
+
+<table>
+	<thead>
+		<th>Tarea predecesora</th>
+		<th>Tarea dependiente</th>
+	</thead>
+	<tbody>
+		<% @precedents.each do |precedent| %>
+		<tr>
+			<td><%= @tasks.where(id: precedent.predecessor_id).first.name if @tasks.where(id: precedent.predecessor_id).first %> </td>
+			<td>
+				<%= @tasks.where(id: precedent.dependent_id).first.name if @tasks.where(id: precedent.dependent_id).first %>
+				
+			</td>
+		</tr>
+		<% end -%>
+	</tbody>
+</table>
+
+<p>
+	<%= link_to 'Agregar nueva dependencia', new_precedents_path, class: 'button success tiny' %>
+	<%= link_to 'Atrás', project_milestones_path(@project), class: 'button secondary tiny' %>
+</p>

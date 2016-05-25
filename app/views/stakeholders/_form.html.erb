@@ -1,4 +1,4 @@
-<%= form_for(@stakeholder) do |f| %>
+<%= form_for(@stakeholder, url: project_stakeholders_path(@project)) do |f| %>
   <% if @stakeholder.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@stakeholder.errors.count, "error") %> prohibited this stakeholder from being saved:</h2>
@@ -12,22 +12,24 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.label :name, 'Nombre' %><br>
+    <%= f.text_field :name, required: :true %>
   </div>
-  <div class="field">
-    <%= f.label :commitment_level %><br>
-    <%= f.number_field :commitment_level %>
+  <div class="field large-4 left">
+    <%= f.label :commitment_level, 'Nivel de compromiso' %><br>
+    <%= f.number_field :commitment_level, required: :true %>
   </div>
-  <div class="field">
-    <%= f.label :influence %><br>
-    <%= f.number_field :influence %>
+  <div class="field large-1 left"></div>
+  <div class="field large-3 left">
+    <%= f.label :influence, 'Influencia' %><br>
+    <%= f.number_field :influence, required: :true %>
   </div>
-  <div class="field">
-    <%= f.label :power %><br>
-    <%= f.number_field :power %>
+  <div class="field large-1 left"></div>
+  <div class="field large-3 left">
+    <%= f.label :power, 'Poder' %><br>
+    <%= f.number_field :power, required: :true %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit({class: 'button tiny success'}) %>
   </div>
 <% end %>

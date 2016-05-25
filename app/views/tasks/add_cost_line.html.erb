@@ -1,0 +1,45 @@
+<p>
+  <h3> Agregar costo a <%= @task.name %></h3>  
+</p>
+
+<%= form_for(@cost_line, url: task_cost_path(@project, @milestone, @task)) do |f| %>
+	<% if @cost_line.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this cost line from being saved:</h2>
+
+      <ul>
+      <% @cost_line.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name, 'Nombre' %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description, 'Descripción' %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field left large-3">
+    <%= f.label 'Monto estimado' %><br>
+    <%= f.number_field :amount %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-3">
+    <%= f.label 'Semana de pago estimada' %><br>
+    <%= f.number_field :payment_week %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-4">
+    <%= f.label 'Fuente de financiamiento' %><br>
+    <%= f.select(:funding_source, ['Costo de actividades','Reserva de actividades','Reserva de contingencias','Reserva de gestión']) %>
+  </div>
+
+   <div class="actions">
+    <%= f.submit('Agregar nuevo costo',class: 'button success tiny') %>
+    <%= link_to 'Cancelar', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => @task.id }), class: 'button secondary tiny' %>
+  </div>
+<% end -%>

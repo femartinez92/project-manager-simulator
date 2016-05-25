@@ -1,0 +1,42 @@
+<p>
+  <h3>Agregar nuevas precedencias</h3>
+</p>
+<p>
+  Para agregar nuevas dependencias seleccione la tarea precedente de la columna izquierda y todas las tareas que dependan de esta (puede seleccionar más de una) en la columna de la izquierda. 
+</p>
+<%= form_tag create_precedents_path(@project), method: :post %>
+<div class="left large-6">
+  <table>
+    <thead>
+      <th>Tarea predecesora</th>
+      <th>Seleccionar</th>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= task.name %></td>
+          <td><%= check_box_tag "predecessor_id[]", task.id %></td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+</div>
+<div class="left large-6">
+  <table>
+    <thead>
+      <th>Seleccionar (1 o más)</th>
+      <th>Tarea dependiente</th>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= check_box_tag "dependent_ids[]", task.id %></td>
+          <td><%= task.name %></td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+</div>
+<%= submit_tag "Agregar", class: "button tiny success" %>
+  <%= link_to 'Atrás', precedents_path(@project), class: 'button secondary tiny' %>
+

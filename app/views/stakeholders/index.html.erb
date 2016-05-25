@@ -1,13 +1,13 @@
 
-<h1>Listing Stakeholders</h1>
+<h1>Lista de interesados</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Commitment level</th>
-      <th>Influence</th>
-      <th>Power</th>
+      <th>Nombre</th>
+      <th>Nivel de compromiso</th>
+      <th>Influencia</th>
+      <th>Poder</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -19,14 +19,15 @@
         <td><%= stakeholder.commitment_level %></td>
         <td><%= stakeholder.influence %></td>
         <td><%= stakeholder.power %></td>
-        <td><%= link_to 'Show', stakeholder %></td>
-        <td><%= link_to 'Edit', edit_stakeholder_path(stakeholder) %></td>
-        <td><%= link_to 'Destroy', stakeholder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Aumentar compromiso', increase_commitment_project_stakeholder_path(@project, stakeholder), method: :put, class: 'button info tiny' %></td>
+        <td><%= link_to 'Eliminar', project_stakeholder_path(@project, stakeholder), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button tiny alert' if @admin%></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Stakeholder', new_stakeholder_path %>
+<%- if @admin %>
+  <%= link_to 'Crear nuevo interesado', new_project_stakeholder_path(@project), class: 'button tiny success'  %>
+<% end -%>
+<%= link_to 'Volver a vista general', project_path(@project), class: 'button tiny secondary' %>

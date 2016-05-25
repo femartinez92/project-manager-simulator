@@ -1,7 +1,7 @@
 
 <p>
-  <strong>Name:</strong>
-  <%= @task.name %>
+  <h3><%= @task.name %></h3>
+  <%= link_to 'Atrás', project_milestone_path(@project, @milestone), class: 'button tiny secondary' %>
 </p>
 
 <p>
@@ -10,24 +10,15 @@
 </p>
 
 <p>
-  <strong>Min duration:</strong>
-  <%= @task.min_duration %>
+  <h4>Duración</h4>
+  <%= render 'task_duration_table', locals: { task: @task} %>
+  <%= link_to 'Estimar duración', edit_project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => @task.id }), class:'button tiny success'%> 
 </p>
-
 <p>
-  <strong>Most probable duration:</strong>
-  <%= @task.most_probable_duration %>
+  <h4> Costos asociados </h4>
+  <%= link_to 'Nuevo costo', new_task_cost_path({ :project_id => @project.id, :milestone_id => @milestone.id, :task_id => @task.id }), class:'button tiny success'%>
+  <%= render 'costs_list', locals: { costs_list: @costs_list} %>
 </p>
+<h4></h4>
 
-<p>
-  <strong>Max duration:</strong>
-  <%= @task.max_duration %>
-</p>
 
-<p>
-  <strong>Pm duration estimation:</strong>
-  <%= @task.pm_duration_estimation %>
-</p>
-
-<%= link_to 'Edit', edit_project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => @task.id }) %> |
-<%= link_to 'Back', project_milestone_path(@project, @milestone) %>

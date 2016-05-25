@@ -1,0 +1,29 @@
+<% projects = locals[:projects] %>
+<p>
+  <h3><%= locals[:title] %></h3>
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Semana Actual</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% projects.each do |project| %>
+      <tr>
+        <td><%= project.name %></td>
+        <td><%= project.actual_week %></td>
+        <td><%= link_to 'Ver detalles', project, class: 'button tiny info' %></td>
+        <!-- <td>
+          <%# link_to 'Edit', edit_project_path(project) %>
+          </td>
+          <td> 
+            <%# link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>-->
+      </tr>
+    <% end %>
+  </tbody>
+</table>

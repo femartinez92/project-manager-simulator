@@ -16,12 +16,8 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :actual_date %><br>
-    <%= f.date_select :actual_date %>
-  </div>
-  <div class="field">
-    <%= f.label :budget %><br>
-    <%= f.text_field :budget %>
+    <%= f.label :actual_week %><br>
+    <%= f.number_field :actual_week %>
   </div>
   <div class="actions">
     <%= f.submit(class: 'button success small') %>

@@ -1,0 +1,12 @@
+<% admin_projects = locals[:admin_projects] %>
+
+<div class="row">
+  <br>
+  <h2>Elige el tipo de proyecto que quieres crear</h2>
+  <br>
+  <% admin_projects.each do |admin_project| %>
+    <%= link_to 'Crear nuevo ' + admin_project.name, clone_project_path(admin_project), method: :post, class: 'button success' %>
+    <br>
+
+  <% end -%>
+</div>

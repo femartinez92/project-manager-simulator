@@ -11,16 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160428144731) do
+ActiveRecord::Schema.define(version: 20160523234039) do
+
+  create_table "budgets", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "activities_cost"
+    t.integer  "activities_reserve"
+    t.integer  "contingency_reserve"
+    t.integer  "managment_reserve"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "profit"
+    t.integer  "activities_cost_used"
+    t.integer  "activities_reserve_used"
+    t.integer  "contingency_reserve_used"
+    t.integer  "managment_reserve_used"
+  end
 
   create_table "cost_lines", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.integer  "amount"
-    t.date     "payment_date"
+    t.integer  "real_amount"
+    t.integer  "payment_week"
+    t.integer  "real_payment_week"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "cost_payment_plan_id"
+    t.string   "status"
+    t.integer  "task_id"
+    t.string   "funding_source"
   end
 
   create_table "cost_payment_plans", force: :cascade do |t|
@@ -42,8 +62,18 @@ ActiveRecord::Schema.define(version: 20160428144731) do
     t.string   "name"
     t.text     "description"
     t.date     "due_date"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "project_id"
+    t.boolean  "is_admin_milestone"
+    t.boolean  "fake"
+  end
+
+  create_table "precedents", force: :cascade do |t|
+    t.integer  "predecessor_id"
+    t.integer  "dependent_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "project_id"
   end
 
@@ -76,11 +106,12 @@ ActiveRecord::Schema.define(version: 20160428144731) do
 
   create_table "projects", force: :cascade do |t|
     t.string   "name"
-    t.date     "actual_date"
-    t.integer  "budget"
+    t.integer  "actual_week"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "project_manager_id"
+    t.string   "status"
+    t.boolean  "is_admin_project"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -99,8 +130,17 @@ ActiveRecord::Schema.define(version: 20160428144731) do
     t.integer  "commitment_level"
     t.integer  "influence"
     t.integer  "power"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "project_id"
+    t.boolean  "is_admin_stakeholder"
+  end
+
+  create_table "task_trees", force: :cascade do |t|
+    t.integer  "father_id"
+    t.integer  "child_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -110,9 +150,12 @@ ActiveRecord::Schema.define(version: 20160428144731) do
     t.integer  "most_probable_duration"
     t.integer  "max_duration"
     t.integer  "pm_duration_estimation"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.integer  "milestone_id"
+    t.boolean  "is_admin_task"
+    t.boolean  "fake"
+    t.integer  "admin_duration_estimation"
   end
 
 end

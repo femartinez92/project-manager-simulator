@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_id: 1
+  activities_cost: 1
+  activities_reserve: 1
+  contingency_reserve: 1
+  managment_reserve: 1
+
+two:
+  project_id: 1
+  activities_cost: 1
+  activities_reserve: 1
+  contingency_reserve: 1
+  managment_reserve: 1
