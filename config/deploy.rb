@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.3.5'
+lock '3.1.0'
 
 set :application, 'spui'
 set :repo_url, 'git@github.com:femartinez92/project-manager-simulator.git'
