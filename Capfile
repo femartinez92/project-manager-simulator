@@ -19,6 +19,7 @@ require 'capistrano/deploy'
  require 'capistrano/rails/assets'
  require 'capistrano/rails/migrations'
  require 'capistrano/rails'
+ require 'capistrano3/unicorn'
 
  require 'capistrano/rbenv'
  set :rbenv_type, :user
