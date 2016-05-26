@@ -4,9 +4,9 @@
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
 # Don't declare `role :all`, it's a meta role
-#role :app, %w{administrator@prosim.ing.puc.cl}
-#role :web, %w{administrator@prosim.ing.puc.cl}
-#role :db,  %w{administrator@prosim.ing.puc.cl}
+# role :app, %w{administrator@prosim.ing.puc.cl}
+# role :web, %w{administrator@prosim.ing.puc.cl}
+# role :db,  %w{administrator@prosim.ing.puc.cl}
 
 set :port, 22
 set :user, 'administrator'
