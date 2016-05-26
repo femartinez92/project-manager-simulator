@@ -19,7 +19,7 @@ set :use_sudo, false
 # definition into the server list. The second argument
 # something that quacks like a hash can be used to set
 # extended properties on the server.
-server 'localhost',
+server 'prosim.ing.puc.cl',
 	roles: %w{web app}, 
 	user: fetch(:user), 
 	port: fetch(:port), 

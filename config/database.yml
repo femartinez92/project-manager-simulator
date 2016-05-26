@@ -24,8 +24,7 @@ production:
   adapter: postgresql
   encoding: unicode
   database: project_manager_simulator_production
-  host: prosim.ing.puc.cl
+  host: localhost
   pool: 5
   username: dbuser
   password: dbpass
-  database: db/production.sqlite3
