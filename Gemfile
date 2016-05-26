@@ -40,10 +40,16 @@ gem 'active_median', '~> 0.1.0'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn', group: :production
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+group :development do
+	gem 'capistrano', '~> 3.1.0'
+	gem 'capistrano-bundler', '~> 1.1.2'
+	gem 'capistrano-rails', '~> 1.1.1'
+	gem 'capistrano-rbenv', github: "capistrano/rbenv"
+	gem 'capistrano3-unicorn'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

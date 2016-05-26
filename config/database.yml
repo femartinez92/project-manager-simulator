@@ -21,5 +21,11 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  database: project_manager_simulator_production
+  host: prosim.ing.puc.cl
+  pool: 5
+  username: dbuser
+  password: dbpass
   database: db/production.sqlite3
