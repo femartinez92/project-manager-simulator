@@ -1,6 +1,6 @@
 # Set your full path to application.
 root = File.expand_path('../../', __FILE__)
-shared = File.expand_path('../../../shared/', __FILE__)
+shared = File.expand_path('../../shared/', __FILE__)
 working_directory root
 
 pid "#{shared}/tmp/pids/unicorn.pid"
