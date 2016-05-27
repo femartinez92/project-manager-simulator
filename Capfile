@@ -26,5 +26,9 @@ require 'capistrano/deploy'
  set :rbenv_ruby, '2.2.0'
 # require 'capistrano/chruby'
 
+set :default_env, { 
+'SECRET_KEY_BASE' => '4e594a4c02abe972c66c9e891c58c81283d88b8ec215aa31edc23cf74c5e5de651692e7a5a42fd979762ae00927c880ebe6f0115862a97a0c4e7ababb86a48bb'
+}
+
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
