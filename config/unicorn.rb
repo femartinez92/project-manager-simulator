@@ -1,10 +1,12 @@
-root = "/home/administrator/apps/project-manager-simulator/public"
+# Set your full path to application.
+root = File.expand_path('../../', __FILE__)
+shared = File.expand_path('../../../shared/', __FILE__)
 working_directory root
 
-pid "#{root}/tmp/pids/unicorn.pid"
+pid "#{shared}/tmp/pids/unicorn.pid"
 
-stderr_path "#{root}/log/unicorn.log"
-stdout_path "#{root}/log/unicorn.log"
+stderr_path "#{shared}/log/unicorn.log"
+stdout_path "#{shared}/log/unicorn.log"
 
 worker_processes 3
 timeout 30
