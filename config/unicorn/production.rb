@@ -10,7 +10,7 @@ worker_processes 3
 timeout 30
 preload_app true
 
-listen '/home/administrator/apps/project-manager-simulator/tmp/unicorn.project-manager-simulator.sock', backlog: 64
+listen "/tmp/unicorn.project-manager-simulator.sock", backlog: 64
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do
