@@ -11,7 +11,7 @@
 set :port, 22
 set :user, 'administrator'
 set :deploy_via, :remote_cache
-set :use_sudo, false
+set :use_sudo, true
 
 # Extended Server Syntax
 # ======================
