@@ -1,4 +1,4 @@
-root = "/home/administrator/apps/project-manager-simulator/public"
+root = "/home/administrator/apps/project-manager-simulator"
 working_directory root
 
 pid "#{root}/tmp/pids/unicorn.pid"
