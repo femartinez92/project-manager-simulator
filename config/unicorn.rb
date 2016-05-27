@@ -3,7 +3,7 @@ root = File.expand_path('../../', __FILE__)
 shared = File.expand_path('../../shared/', __FILE__)
 working_directory root
 
-pid "#{shared}/tmp/pids/unicorn.pid"
+pid "#{shared}/pids/unicorn.pid"
 
 stderr_path "#{shared}/log/unicorn.log"
 stdout_path "#{shared}/log/unicorn.log"
