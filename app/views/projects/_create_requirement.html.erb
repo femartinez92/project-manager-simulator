@@ -1,0 +1,23 @@
+<%= form_tag create_requirement_project_path %>
+  <h5>Crear nuevo requisito</h5>
+  <div class="field left large-4">
+    <%= label_tag :requirement_id, 'Identificador' %>
+    <%= text_field_tag :requirement_id %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-4">
+    <%= label_tag :name, 'Nombre' %>
+    <%= text_field_tag :name %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-2">
+    <%= label_tag :is_present, 'Es requisito inicial?' %>
+    <%= check_box_tag :is_present %>
+  </div>
+  <div class="field left large-12">
+    <%= label_tag :description, 'Descripción' %>
+    <%= text_area_tag :description %>
+  </div>
+  <div class="large-3">
+    <%= submit_tag 'Agregar requisito', class: 'button tiny success' %>
+  </div>

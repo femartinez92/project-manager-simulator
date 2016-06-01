@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160523234039) do
+ActiveRecord::Schema.define(version: 20160531155556) do
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "project_id"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20160523234039) do
     t.string   "student_number"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.integer  "project_type_id"
   end
 
   add_index "project_managers", ["email"], name: "index_project_managers_on_email", unique: true
@@ -107,11 +108,23 @@ ActiveRecord::Schema.define(version: 20160523234039) do
   create_table "projects", force: :cascade do |t|
     t.string   "name"
     t.integer  "actual_week"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "project_manager_id"
     t.string   "status"
     t.boolean  "is_admin_project"
+    t.date     "start_date"
+    t.text     "strategic_objective"
+  end
+
+  create_table "requirements", force: :cascade do |t|
+    t.string   "requirement_id"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "project_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.boolean  "is_present"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -124,6 +137,13 @@ ActiveRecord::Schema.define(version: 20160523234039) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], name: "index_roles_on_name"
+
+  create_table "scope_statements", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "project_manager_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
   create_table "stakeholders", force: :cascade do |t|
     t.string   "name"

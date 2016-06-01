@@ -19,6 +19,14 @@
     <%= f.label :actual_week %><br>
     <%= f.number_field :actual_week %>
   </div>
+  <div class="field">
+    <%= f.label :start_date %><br>
+    <%= f.date_select :start_date %>
+  </div>
+  <div class="field">
+    <%= f.label :strategic_objective, 'Objetivos estratégicos' %><br>
+    <%= f.text_area :strategic_objective %>
+  </div>
   <div class="actions">
     <%= f.submit(class: 'button success small') %>
   </div>

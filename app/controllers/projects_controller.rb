@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement]
   before_action :set_admin
   before_action :authenticate_project_manager!
   # GET /projects
@@ -19,6 +19,10 @@ class ProjectsController < ApplicationController
   def show
     @cost_payment_plan = @project.cost_payment_plan
     @cost_lines = @cost_payment_plan.cost_lines
+    sum = 0
+    @estimated_payment_schedule = @cost_payment_plan.estimated_payment_schedule(@project).sort{|x,y| x[0] <=> y[0]}.map { |x,y| { x => (sum += y)} }.reduce({}, :merge)
+    sum = 0
+    @real_payment_schedule = @cost_payment_plan.real_payment_schedule(@project).sort{|x,y| x[0] <=> y[0]}.map { |x,y| { x => (sum += y)} }.reduce({}, :merge)
     @stakeholders = @project.stakeholders
     @milestones = @project.milestones
     @budget = @project.budget
@@ -112,14 +116,10 @@ class ProjectsController < ApplicationController
   end
 
   def save_real_cost
-    set_project
+    @project = Project.find(params[:project_id])
     @cost_line = CostLine.find(params[:cost_line_id])
-    @cost_line.real_amount = params[:real_amount]
-    @cost_line.real_payment_week = params[:real_payment_week]
-    @cost_line.funding_source = params[:funding_source]
-    @cost_line.status = 'Pagado';
     respond_to do |format|
-      if @cost_line.save
+      if @cost_line.pay( params[:real_amount], params[:real_payment_week])
         format.html { redirect_to project_costs_path(@project), notice: 'Costo pagado satisfactoriamente' }
       else
         format.html {redirect_to insert_real_cost_path(@project), notice: 'Something interrupted the operation, please try again'}
@@ -127,7 +127,44 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # ---- Scope statement ---- #
 
+  # GET /
+  # We select the project of the project type assigned to this manager
+  # In case he don't have one assigned we set this as the first admin project.
+
+  def scope_statement
+    unless @admin
+      project_id = current_project_manager.project_type_id
+      if ( project_id == 0 or project_id == nil)
+        if Project.from_admin.first
+          current_project_manager.project_type_id = Project.from_admin.first.id
+          project_id = current_project_manager.project_type_id
+        else
+          respond_to do |format|
+            format.html { redirect_to projects_path }
+          end
+        end
+        @project = Project.find(project_id)
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to projects_path }
+      end
+    end
+  end
+
+  def create_requirement
+    req = Requirement.new(requirement_params)
+    req.project_id = params[:id]
+    respond_to do |format|
+      if req.save
+        format.html { redirect_to project_path(@project), notice: 'Requisito agregado correctamente' }
+      else
+        format.html { redirect_to project_path(@project), notice: 'Ocurrió un problema al tratar de guardar el requisito' }
+      end
+    end
+  end
 
   private
 
@@ -146,6 +183,11 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:name, :actual_week)
+      params.require(:project).permit(:name, :actual_week, :start_date, :strategic_objective)
     end
+
+    def requirement_params
+      params.permit(:requirement_id, :name, :description, :is_present)
+    end
+
 end

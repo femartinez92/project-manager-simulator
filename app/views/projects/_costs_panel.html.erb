@@ -1,4 +1,5 @@
-<% cost_lines = locals[:cost_lines] %>
+<% estimated_payment_schedule = locals[:estimated_ps] %>
+<% real_payment_schedule = locals[:real_ps] %>
 <div class="large-12" id="costs">
   <div class="row">
     <div class="large-4 left">
@@ -11,7 +12,7 @@
 
   <div class="large-7 left" id="cost_evolution">
     <% sum = 0 %>
-    <%= line_chart cost_lines.group(:payment_week).sum(:amount).to_a.sort{|x,y| x[0] <=> y[0]}.map { |x,y| { x => (sum += y)} }.reduce({}, :merge) %>
+    <%= line_chart [{ name: "Costo Estimado", data: estimated_payment_schedule }, { name: "Costo Real", data: real_payment_schedule }] %>
   </div>
   <div class="large-4 right" id="indicators">Indicadores</div>
 

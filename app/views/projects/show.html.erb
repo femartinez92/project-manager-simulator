@@ -12,13 +12,20 @@
   <strong> Estado del proyecto: </strong>
   <%= @project.status %>
   <br>
-  <%- if @project.status == 'Inicio' %>
+  <strong> Fecha de inicio: </strong>
+  <%= @project.start_date %>
+  <br>
 
+  <%- if ( @project.modificable? and not @admin ) %>
+    <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
   <% end -%>
 </p>
-
+<%- if @admin %>
+  <%= render 'admin_panel' %>
+<% end -%>
 <div class="panel radius row">
-  <%= render 'costs_panel', locals: { cost_lines: @cost_lines } %>
+  <%= render 'costs_panel', locals: { estimated_ps: @estimated_payment_schedule,
+                                      real_ps: @real_payment_schedule } %>
 </div>
 <br>
 <div class="panel radius row float">

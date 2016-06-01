@@ -1,0 +1,13 @@
+<p>
+	<h4>Ingrese el monto real y la semana de pago real</h3>
+</p>
+<%= form_tag pay_cost_path %>
+ 	<div class="field">
+    <%= label_tag :real_amount, 'Monto real' %><br>
+    <%= number_field_tag :real_amount %>
+  </div>
+  <div class="field">
+    <%= label_tag :real_payment_week, 'Semana de pago real' %><br>
+    <%= number_field_tag :real_payment_week %>
+  </div>
+<%= submit_tag "Pagar", class: "button tiny warning" %>

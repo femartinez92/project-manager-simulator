@@ -12,7 +12,7 @@
       <th> Fuente de financiamiento</th>
       <th> Estado </th>
 
-      <th colspan="3"></th>
+      <th colspan="3">Acciones</th>
     </tr>
   </thead>
 
@@ -27,7 +27,7 @@
         <td><%= cost_line.real_payment_week %></td>
         <td><%= cost_line.funding_source %></td>
         <td><%= cost_line.status %></td>
-        <td></td>
+        <td><%= link_to 'Declarar pago', set_real_cost_path(@project, cost_line), class: 'button tiny warning' unless cost_line.paid? %></td>
       </tr>
     <% end %>
   </tbody>

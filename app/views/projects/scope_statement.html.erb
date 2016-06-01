@@ -1,0 +1,36 @@
+<p>
+  <div class="left large-8">
+    <h1>
+      <%= @project.name %>
+    </h1>
+  </div>
+  <div class="left large-4">
+    <%= link_to 'Ir al proyecto', projects_path, class: 'button info tiny' %>
+  </div>
+</p>
+<br><br><br><br>
+<div class="panel radius">
+  <h3 class="panel callout radius">Descripción del proyecto</h3>
+  <div class="panel">
+    <h5>Objetivos estratégicos</h5>
+    <p> <%= simple_format( @project.strategic_objective ) %></p>
+  </div>
+  <!-- <div class="panel">
+    <h5>Objetivos y alcance del projecto</h5>
+    <p> </p>
+  </div> -->
+</div>
+
+<div class="panel radius">
+  <h4 class="panel callout radius">Alcance del proyecto</h4>
+  <div class="panel">
+    <h5><strong>Requisitos</strong></h5>
+    <p>
+      <ul>
+      <% @project.requirements.present.each do |req| %>
+        <li><%= req.requirement_id + ' | ' +  req.name %> </li>
+      <% end -%>
+      </ul>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requirement_id: MyString
+  name: MyString
+  description: MyString
+  project_id: 1
+
+two:
+  requirement_id: MyString
+  name: MyString
+  description: MyString
+  project_id: 1
