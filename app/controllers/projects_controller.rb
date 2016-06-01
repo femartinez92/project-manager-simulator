@@ -145,8 +145,8 @@ class ProjectsController < ApplicationController
             format.html { redirect_to projects_path }
           end
         end
-        @project = Project.find(project_id)
       end
+      @project = Project.find(project_id)
     else
       respond_to do |format|
         format.html { redirect_to projects_path }
