@@ -4,6 +4,9 @@
     <strong> Objetivos estratégicos: </strong>
     <%= simple_format(@project.strategic_objective) %>
     <%= link_to 'Editar proyecto', edit_project_path(@project), class: 'button tiny info' %>
+    <%= link_to 'Crear hitos', new_project_milestone_path(@project), class: 'button tiny info' %>
+    <%= link_to 'Crear recursos humanos', new_human_resource_path, class: 'button tiny info' %>
+    <%= link_to 'Crear interesados', new_project_stakeholder_path(@project), class: 'button tiny info' %>
     <h5><strong>Requisitos</strong></h5>
     <p>
       <ul>

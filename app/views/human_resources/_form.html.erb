@@ -1,0 +1,36 @@
+<%= form_for(@human_resource) do |f| %>
+  <% if @human_resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@human_resource.errors.count, "error") %> prohibited this human_resource from being saved:</h2>
+
+      <ul>
+      <% @human_resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field left large-2">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-2">
+    <%= f.label :resource_type, 'Especialidad' %><br>
+    <%= f.number_field :resource_type %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-3">
+    <%= f.label :salary, 'Sueldo mensual (180 horas de trabajo)' %><br>
+    <%= f.number_field :salary %>
+  </div>
+  <div class="field left large-1"></div>
+  <div class="field left large-2">
+    <%= f.label :experience, 'Años de experiencia' %><br>
+    <%= f.number_field :experience %>
+  </div>
+  <div class="actions">
+    <%= f.submit(class: 'button tiny success') %>
+  </div>
+<% end %>

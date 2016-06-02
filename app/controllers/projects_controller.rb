@@ -122,7 +122,7 @@ class ProjectsController < ApplicationController
       if @cost_line.pay( params[:real_amount], params[:real_payment_week])
         format.html { redirect_to project_costs_path(@project), notice: 'Costo pagado satisfactoriamente' }
       else
-        format.html {redirect_to insert_real_cost_path(@project), notice: 'Something interrupted the operation, please try again'}
+        format.html { redirect_to insert_real_cost_path(@project), notice: 'Something interrupted the operation, please try again'}
       end
     end
   end
@@ -137,13 +137,14 @@ class ProjectsController < ApplicationController
     unless @admin
       project_id = current_project_manager.project_type_id
       if ( project_id == 0 or project_id == nil)
-        if Project.from_admin.first
+        if ( Project.from_admin.first != nil)
           current_project_manager.project_type_id = Project.from_admin.first.id
           project_id = current_project_manager.project_type_id
         else
           respond_to do |format|
             format.html { redirect_to projects_path }
           end
+          return
         end
       end
       @project = Project.find(project_id)
@@ -153,6 +154,8 @@ class ProjectsController < ApplicationController
       end
     end
   end
+
+  # ---- Requirements ---- #
 
   def create_requirement
     req = Requirement.new(requirement_params)
@@ -165,6 +168,7 @@ class ProjectsController < ApplicationController
       end
     end
   end
+
 
   private
 

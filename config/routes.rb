@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :human_resources
   devise_for :project_managers
   resources :cost_payment_plans
   resources :projects do
@@ -38,6 +39,9 @@ Rails.application.routes.draw do
     # Get the scope statement of the project that the user must manage
     get '/', to: 'projects#scope_statement', as: 'scope_statement'
 
+    # Get the shop of people for the team
+    get 'human_resources_shop', to: 'human_resources#shop', as: 'human_resources_shop'
+    post 'human_resources/:id/clone', to: 'human_resources#clone', as: 'human_resources_clone'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

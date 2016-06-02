@@ -1,0 +1,28 @@
+<% human_resources = locals[:human_resources] %>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Especialidad</th>
+      <th>Experiencia</th>
+      <th>Sueldo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% human_resources.each do |human_resource| %>
+      <tr>
+        <td><%= human_resource.name %></td>
+        <td><%= human_resource.resource_type %></td>
+        <td><%= human_resource.experience %></td>
+        <td><%= human_resource.salary %></td>
+        <td><%= link_to 'Detalles', human_resource, class: 'button tiny info' %></td>
+        <td><%= link_to 'Editar', edit_human_resource_path(human_resource), class: 'button tiny secondary' if @admin%></td>
+        <td><%= link_to 'Eliminar', human_resource, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button tiny alert' if @admin%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

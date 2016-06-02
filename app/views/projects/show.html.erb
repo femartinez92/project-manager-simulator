@@ -18,6 +18,7 @@
 
   <%- if ( @project.modificable? and not @admin ) %>
     <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
+    <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
   <% end -%>
 </p>
 <%- if @admin %>

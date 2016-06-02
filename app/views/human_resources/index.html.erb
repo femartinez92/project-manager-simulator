@@ -1,0 +1,7 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Recursos humanos disponibles</h1>
+
+<%= render 'human_resource_list', locals: { human_resources: @human_resources } %>
+
+<%= link_to 'New Human resource', new_human_resource_path %>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @human_resource.name %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @human_resource.project_id %>
+</p>
+
+<p>
+  <strong>Is from admin:</strong>
+  <%= @human_resource.is_from_admin %>
+</p>
+
+<p>
+  <strong>Experience:</strong>
+  <%= @human_resource.experience %>
+</p>
+
+<p>
+  <strong>Salary:</strong>
+  <%= @human_resource.salary %>
+</p>
+
+<%= link_to 'Edit', edit_human_resource_path(@human_resource) %> |
+<%= link_to 'Back', human_resources_path %>

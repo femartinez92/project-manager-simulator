@@ -3,7 +3,7 @@ class Requirement < ActiveRecord::Base
 
   def present?
     if is_present
-      return 'presente'
+      return 'Presente'
     end
     'Aun no activo'
   end

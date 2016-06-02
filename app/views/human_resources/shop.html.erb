@@ -1,0 +1,56 @@
+<p>
+  <h3>Tu Equipo </h3>
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Especialidad</th>
+      <th>Experiencia</th>
+      <th>Sueldo</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <%- if @your_human_resources != nil %>
+    <% @your_human_resources.each do |human_resource| %>
+      <tr>
+        <td><%= human_resource.name %></td>
+        <td><%= human_resource.resource_type %></td>
+        <td><%= human_resource.experience %></td>
+        <td><%= human_resource.salary %></td>
+      </tr>
+    <% end %>
+  <% end -%>
+  </tbody>
+</table>
+<p>
+  <h3>
+    Mercado  
+  </h3>
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Especialidad</th>
+      <th>Experiencia</th>
+      <th>Sueldo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @human_resources.each do |human_resource| %>
+      <tr>
+        <td><%= human_resource.name %></td>
+        <td><%= human_resource.resource_type %></td>
+        <td><%= human_resource.experience %></td>
+        <td><%= human_resource.salary %></td>
+        <td><%= link_to 'Contratar', human_resources_clone_path(human_resource), method: :post, class: 'button tiny info' if not @admin %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
