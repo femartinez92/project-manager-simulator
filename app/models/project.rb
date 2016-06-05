@@ -15,16 +15,16 @@ class Project < ActiveRecord::Base
   end
 
   def monitoriable?
-    return true if ( status == 'Monitoreo y control' )
+    return true if (status == 'Monitoreo y control')
     false
   end
 
   def human_resources_for_select
-    self.human_resources.map{|hr| [hr.name + ': ' + hr.resource_type.to_s + ' | Sueldo: ' + hr.salary.to_s + ' | Experiencia: ' + hr.experience.to_s + ' años', hr.id]}
+    human_resources.map { |hr| [hr.description, hr.id] }
   end
 
   def clone_requirements(other_project_id)
-    self.requirements.each do |req|
+    requirements.each do |req|
       r2 = req.dup
       r2.project_id = other_project_id
       r2.save

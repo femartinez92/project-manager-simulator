@@ -47,7 +47,7 @@ Rails.application.routes.draw do
     get 'human_resources_shop', to: 'human_resources#shop', as: 'human_resources_shop'
     post 'human_resources/:id/clone', to: 'human_resources#clone', as: 'human_resources_clone'
 
-    # Asignar recursos a tarea
+    # Assign human resources to task
     post 'projects/:project_id/milestones/:milestone_id/tasks/:id/assign_resource', to: 'tasks#assign_resource', as: 'assign_resource'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -4,7 +4,9 @@ class HumanResource < ActiveRecord::Base
     has_many :tasks, through: :resource_assignations
   scope :from_admin, -> { where(is_from_admin: true)}
 
+
   def description
-    self.name + ": " + self.resource_type.to_s
+    name + ': ' + resource_type.to_s + ' | Sueldo: ' + salary.to_s +
+      ' | Experiencia: ' + experience.to_s + ' años'
   end
 end
