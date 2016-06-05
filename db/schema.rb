@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602001722) do
+ActiveRecord::Schema.define(version: 20160602205740) do
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "project_id"
@@ -138,6 +138,14 @@ ActiveRecord::Schema.define(version: 20160602001722) do
     t.boolean  "is_present"
   end
 
+  create_table "resource_assignations", force: :cascade do |t|
+    t.integer  "human_resource_id"
+    t.integer  "task_id"
+    t.integer  "time"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -180,6 +188,7 @@ ActiveRecord::Schema.define(version: 20160602001722) do
     t.boolean  "is_admin_task"
     t.boolean  "fake"
     t.integer  "admin_duration_estimation"
+    t.integer  "advance_percentage"
   end
 
 end

@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :estimate_duration, :assign_resource]
   before_action :set_project, :set_admin
   before_action :set_milestone, except: [:clone]
   before_action :authenticate_project_manager!
@@ -14,6 +14,8 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     @costs_list = @task.cost_lines
+    @hhrr_array = @project.human_resources_for_select
+    @hhrr_assigned = ResourceAssignation.where(task_id: params[:id])
   end
 
   # GET /tasks/new
@@ -29,6 +31,20 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
+  end
+
+  # POST /tasks/1/estimate_duration
+  def estimate_duration
+    @task.pm_duration_estimation = params[:pm_duration_estimation]
+    respond_to do |format|
+      if @task.save
+        format.html { redirect_to project_milestone_path(@project, @milestone), notice: 'Duración estimada correctamente' }
+        format.json { render :show, status: :ok, location: @task }
+      else
+        format.html { render project_milestone_path(@project, @milestone) }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # Allows a project manager to add tasks from
@@ -113,6 +129,18 @@ class TasksController < ApplicationController
     end
   end
 
+  def assign_resource
+    ra = ResourceAssignation.new(resource_assignement_params)
+    ra.task_id = @task.id
+    respond_to do |format|
+      if ra.save
+        format.html { redirect_to project_milestone_task_path(@project, @milestone, @task), notice: 'Recurso agregado con exito' }
+      else
+        format.html { redirect_to project_milestone_task_path(@project, @milestone, @task), notice: 'Ha ocurrido un problema' }
+      end
+    end
+  end
+
   #### ----------- Private methods ----------- ####
 
   private
@@ -144,4 +172,7 @@ class TasksController < ApplicationController
     params.require(:cost_line).permit(:name, :description, :amount, :payment_week, :funding_source)
   end
 
+  def resource_assignement_params
+    params.permit(:human_resource_id, :time)
+  end
 end

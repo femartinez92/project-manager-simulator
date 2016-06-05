@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   resources :cost_payment_plans
   resources :projects do
     resources :milestones do
-      resources :tasks
+      resources :tasks do
+        member do
+          post 'estimate_duration'
+        end
+      end
     end
     resources :stakeholders do
       member do
@@ -42,6 +46,9 @@ Rails.application.routes.draw do
     # Get the shop of people for the team
     get 'human_resources_shop', to: 'human_resources#shop', as: 'human_resources_shop'
     post 'human_resources/:id/clone', to: 'human_resources#clone', as: 'human_resources_clone'
+
+    # Asignar recursos a tarea
+    post 'projects/:project_id/milestones/:milestone_id/tasks/:id/assign_resource', to: 'tasks#assign_resource', as: 'assign_resource'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

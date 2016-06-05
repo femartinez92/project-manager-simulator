@@ -12,12 +12,42 @@
 <p>
   <h4>Duración</h4>
   <%= render 'task_duration_table', locals: { task: @task} %>
-  <%= link_to 'Estimar duración', edit_project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => @task.id }), class:'button tiny success'%> 
 </p>
 <p>
   <h4> Costos asociados </h4>
   <%= link_to 'Nuevo costo', new_task_cost_path({ :project_id => @project.id, :milestone_id => @milestone.id, :task_id => @task.id }), class:'button tiny success'%>
   <%= render 'costs_list', locals: { costs_list: @costs_list} %>
+</p>
+<p>
+  <h4>Recursos humanos</h4>
+  <!-- Crear nueva asignación-->
+  <div class="panel">
+    <h6>Asignar recurso</h6>
+    <%= form_tag assign_resource_path %>
+    <div class="field">
+      <%= label_tag :human_resource_id, 'Recurso humano' %>
+      <%= select_tag(:human_resource_id, options_for_select(@hhrr_array)) %>
+    </div>
+    <div class="field">
+      <%= label_tag :time, 'Tiempo (días)' %>
+      <%= number_field_tag :time %>
+    </div>
+    <%= submit_tag 'Asignar', class: 'button tiny success' %>
+
+    <table>
+      <caption>Recursos asignados</caption>
+      <thead>
+        <th>Recurso</th>
+        <th>Tiempo</th>
+      </thead>
+      <tbody>
+        <% @hhrr_assigned.each do |hr| %>
+        <td><%= HumanResource.find(hr.human_resource_id).name %></td>
+        <td><%= hr.time %></td>
+        <% end -%>
+      </tbody>
+    </table>
+  </div>
 </p>
 <h4></h4>
 

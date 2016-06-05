@@ -10,8 +10,17 @@ class Project < ActiveRecord::Base
   scope :cloned, -> { where(is_admin_project: false) }
 
   def modificable?
-    return true if status == 'Inicio'
+    return true if (status == 'Inicio')
     false
+  end
+
+  def monitoriable?
+    return true if ( status == 'Monitoreo y control' )
+    false
+  end
+
+  def human_resources_for_select
+    self.human_resources.map{|hr| [hr.name + ': ' + hr.resource_type.to_s + ' | Sueldo: ' + hr.salary.to_s + ' | Experiencia: ' + hr.experience.to_s + ' años', hr.id]}
   end
 
   def clone_requirements(other_project_id)
