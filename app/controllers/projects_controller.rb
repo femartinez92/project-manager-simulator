@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement, :edit_budget]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement, :edit_budget, :configure_simulator]
   before_action :set_admin
   before_action :authenticate_project_manager!
   # GET /projects
@@ -26,12 +26,19 @@ class ProjectsController < ApplicationController
     @stakeholders = @project.stakeholders
     @milestones = @project.milestones
     @budget = @project.budget
+    if @project.simulator.nil?
+      @project.simulator = Simulator.create!
+      @project.save
+    end
+    @simulator = @project.simulator
   end
 
   def clone
     @project = Project.find(params[:id]).dup
     cpp = CostPaymentPlan.create!
     budget = Budget.create!
+    @project.save
+    @project.simulator = Project.find(params[:id]).simulator.clone(@project)
     @project.cost_payment_plan = cpp
     @project.budget = budget
     @project.project_manager_id = current_project_manager.id
@@ -63,8 +70,10 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     cpp = CostPaymentPlan.create!
     budget = Budget.create!
+    simulator = Simulator.create!
     @project.cost_payment_plan = cpp
     @project.budget = budget
+    @project.simulator = simulator
     @project.project_manager_id = current_project_manager.id
     @project.is_admin_project = current_project_manager.has_role? :admin
     @project.status = 'Inicio'
@@ -185,6 +194,16 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # ---- SIMULATOR ---- #
+  def configure_simulator
+    respond_to do |format|
+      if @project.simulator.update(simulator_params)
+        format.html { redirect_to project_path(@project), notice: 'Requisito agregado correctamente' }
+      else
+        format.html { redirect_to project_path(@project), notice: 'Ocurrió un problema al tratar de guardar el requisito' }
+      end
+    end
+  end
 
   private
 
@@ -212,6 +231,10 @@ class ProjectsController < ApplicationController
 
     def budget_params
       params.permit(:activities_cost, :activities_reserve, :contingency_reserve, :managment_reserve)
+    end
+
+    def simulator_params
+      params.permit(:risk_activation_prob, :resource_unavailable_prob, :scope_modify_prob, :plan_change_prob, :step_length)
     end
 
 end

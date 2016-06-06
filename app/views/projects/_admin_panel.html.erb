@@ -1,32 +1,33 @@
 <div class="panel radius row" id="admin-panel">
   <h4>Panel de administrador</h4>
-  <p>
+  <div class="row" id="project-config">
+    <%= link_to 'Editar proyecto', edit_project_path(@project), class: 'button radius tiny warning' %>
+    <%= link_to 'Crear hitos', new_project_milestone_path(@project), class: 'button radius tiny warning' %>
+    <%= link_to 'Crear recursos humanos', new_human_resource_path, class: 'button radius tiny warning' %>
+    <%= link_to 'Crear interesados', new_project_stakeholder_path(@project), class: 'button radius tiny warning' %>
+    <a href="#" data-reveal-id="define-budget" class="radius button tiny warning">Definir presupuesto</a>
+    <%= render 'define_budget_form' %>
+  </div>
+  <div class="row" id="simulator-bar">
+    <%= render 'admin_simulator_bar' %>
+  </div>
+    <p>
     <strong> Objetivos estratégicos: </strong>
     <%= simple_format(@project.strategic_objective) %>
-    <%= link_to 'Editar proyecto', edit_project_path(@project), class: 'button tiny info' %>
-    <%= link_to 'Crear hitos', new_project_milestone_path(@project), class: 'button tiny info' %>
-    <%= link_to 'Crear recursos humanos', new_human_resource_path, class: 'button tiny info' %>
-    <%= link_to 'Crear interesados', new_project_stakeholder_path(@project), class: 'button tiny info' %>
-    <a href="#" data-reveal-id="define-budget" class="radius button tiny warning">Definir presupuesto</a>
-    <h5><strong>Requisitos</strong></h5>
-    <p>
-      <ul>
-      <% @project.requirements.each do |req| %>
-        <li>
-          <%= req.print %>
-        </li>
-      <% end -%>
-      </ul>
-    </p>
   </p>
-<!-- modal definir presupuesto -->
-      <div id="define-budget" class="reveal-modal" data-reveal aria-labelledby="budget-label-title" aria-hidden="true" role="dialog">
-        <h2 id="budget-label-title">Definir presupuesto</h2>
-        <%= render 'define_budget_form' %>
-      </div>
+  <h5><strong>Requisitos</strong></h5>
+  <p>
+    <ul>
+      <% @project.requirements.each do |req| %>
+        <li> <%= req.print %> </li>
+      <% end -%>
+    </ul>
+  </p>
   <br>
-      <%= render 'create_requirement' %>
+  <div class='row' id="create-requirement">
+    <%= render 'create_requirement' %>
   </div>
-  <br>
+</div>
+<br>
 
   

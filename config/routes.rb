@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     end
     member do
       post 'create_requirement' # create_requirement_project_path (projects#create_requirement)
+      post 'configure_simulator' 
       put 'edit_budget'  # /projects/:id/edit_budget
     end
   end

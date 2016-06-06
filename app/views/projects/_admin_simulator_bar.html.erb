@@ -1,0 +1,36 @@
+<a href="#" data-reveal-id="configure-simulator" class="radius button tiny info">Configurar simulador</a>
+<div id="configure-simulator" class="reveal-modal" data-reveal aria-labelledby="config-sim-label-title" aria-hidden="true" role="dialog">
+  <h2 id="config-sim-label-title">Configurar parametros simulador</h2>
+  <p>Recuerde que las probabilidades son valores entre 0 y 1</p>
+  <%= form_for(@simulator, url: configure_simulator_project_path,method: :post, id: 'configure_simulator') do %>
+    <div class="field left large-3">
+      <%= label_tag  :risk_activation_prob, 'Prob. de ocurrencia de riesgo' %>
+      <%= number_field_tag :risk_activation_prob, @simulator.risk_activation_prob, min: 0, max: 1, step: 'any' %>
+    </div>
+    <div class="field left large-1"></div>
+    <div class="field left large-3">
+      <%= label_tag  :resource_unavailable_prob, 'Prob. rec. humano no disponible' %>
+      <%= number_field_tag :resource_unavailable_prob, @simulator.resource_unavailable_prob, min: 0, max: 1, step: 'any' %>
+    </div>
+    <div class="field left large-1"></div>
+    <div class="field left large-3">
+      <%= label_tag  :scope_modify_prob, 'Prob. de cambio de alcance' %>
+      <%= number_field_tag :scope_modify_prob, @simulator.scope_modify_prob, min: 0, max: 1, step: 'any' %>
+    </div>
+    <div class="field left large-1"></div>
+    <div class="field left large-3">
+      <%= label_tag  :plan_change_prob, 'Prob. de modificacion en las tareas' %>
+      <%= number_field_tag :plan_change_prob, @simulator.plan_change_prob, min: 0, max: 1, step: 'any' %>
+    </div>
+    <div class="field left large-1"></div>
+    <div class="field left large-3">
+      <%= label_tag  :step_length, 'Días de cada iteración' %>
+      <%= number_field_tag :step_length, @simulator.step_length, min: 1 %>
+    </div>
+    <div class="field left large-5"></div>
+    <div class="field left large-4 large-offset-1">
+     <%= submit_tag 'Listo', class: 'button success small'  %> 
+    </div>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  <% end -%>
+</div>
