@@ -13,15 +13,12 @@ Things you may want to cover:
 
 * Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Run the server
+RAILS_ENV=production rake db:migrate
+RAILS_ENV=production rake assets:precompile
+ps aux | grep unicorn
+kill -9 <pid de master>
+unicorn_rails -c /home/administrator/apps/project-manager-simulator/config/unicorn.rb -D -E production
 
 
 Please feel free to use a different markup language if you do not plan to run
