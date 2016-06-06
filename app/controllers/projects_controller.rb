@@ -108,7 +108,7 @@ class ProjectsController < ApplicationController
   def edit_budget
     b = @project.budget
     b.update(budget_params)
-    b.profit = ((b.activities_cost + b.activities_reserve + b.contingency_reserve + b.managment_reserve) * 0.2).to_i unless b.profit
+    b.profit = ((b.activities_cost + b.activities_reserve + b.contingency_reserve + b.managment_reserve) * 0.2).to_i
     respond_to do |format|
       if b.save
         format.html { redirect_to @project, notice: 'Presupuesto actualizado' }

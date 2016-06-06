@@ -22,26 +22,7 @@
 <!-- modal definir presupuesto -->
       <div id="define-budget" class="reveal-modal" data-reveal aria-labelledby="budget-label-title" aria-hidden="true" role="dialog">
         <h2 id="budget-label-title">Definir presupuesto</h2>
-        <%= form_for(@budget, url: edit_budget_project_path, method: :put, id: 'define_budget') do %>
-          <div class="field">
-            <%= label_tag  :activities_cost, 'Costo de actividades' %>
-            <%= number_field_tag :activities_cost, @budget.activities_cost %>
-          </div>
-          <div class="field">
-            <%= label_tag  :activities_reserve, 'Reserva de actividades' %>
-            <%= number_field_tag :activities_reserve, @budget.activities_reserve %>
-          </div>
-          <div class="field">
-            <%= label_tag  :contingency_reserve, 'Reserva de contingencia' %>
-            <%= number_field_tag :contingency_reserve, @budget.contingency_reserve %>
-          </div>
-          <div class="field">
-            <%= label_tag  :managment_reserve, 'Reserva de gestión' %>
-            <%= number_field_tag :managment_reserve, @budget.managment_reserve %>
-          </div>
-           <%= submit_tag 'Definir', class: 'button success tiny'  %> 
-        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-        <% end -%>
+        <%= render 'define_budget_form' %>
       </div>
   <br>
       <%= render 'create_requirement' %>
