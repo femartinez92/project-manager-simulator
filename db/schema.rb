@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602205740) do
+ActiveRecord::Schema.define(version: 20160606145941) do
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "project_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20160602205740) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.string   "resource_type"
+    t.boolean  "is_available"
   end
 
   create_table "milestones", force: :cascade do |t|
@@ -156,6 +157,18 @@ ActiveRecord::Schema.define(version: 20160602205740) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], name: "index_roles_on_name"
+
+  create_table "simulators", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "step_length"
+    t.decimal  "resource_unavailable_prob"
+    t.decimal  "scope_modify_prob"
+    t.decimal  "risk_activation_prob"
+    t.decimal  "plan_change_prob"
+    t.integer  "day"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
   create_table "stakeholders", force: :cascade do |t|
     t.string   "name"

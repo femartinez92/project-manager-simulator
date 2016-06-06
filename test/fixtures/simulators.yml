@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_id: 1
+  step_length: 1
+  resource_unavailable_prob: 9.99
+  scope_modify_prob: 9.99
+  risk_activation_prob: 9.99
+  plan_change_prob: 9.99
+  day: 1
+
+two:
+  project_id: 1
+  step_length: 1
+  resource_unavailable_prob: 9.99
+  scope_modify_prob: 9.99
+  risk_activation_prob: 9.99
+  plan_change_prob: 9.99
+  day: 1

@@ -7,4 +7,8 @@ class Requirement < ActiveRecord::Base
     end
     'Aun no activo'
   end
+
+  def print
+  	requirement_id + ' | ' +  name + ' | ' + present? + " | " + description
+  end
 end

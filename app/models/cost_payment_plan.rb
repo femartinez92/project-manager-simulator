@@ -29,4 +29,9 @@ class CostPaymentPlan < ActiveRecord::Base
     ps
   end
 
+  # This method returns the total cost of the project with the estimated costs not yet paid
+  def total
+    cost_lines.unpaid.sum(:amount) + cost_lines.paid.sum(:real_amount)
+  end
+
 end

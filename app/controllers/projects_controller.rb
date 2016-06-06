@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement, :edit_budget]
   before_action :set_admin
   before_action :authenticate_project_manager!
   # GET /projects
@@ -105,6 +105,22 @@ class ProjectsController < ApplicationController
 
   # ---- Costs ---- #
 
+  def edit_budget
+    b = @project.budget
+    b.update(budget_params)
+    b.profit = ((b.activities_cost + b.activities_reserve + b.contingency_reserve + b.managment_reserve) * 0.2).to_i unless b.profit
+    respond_to do |format|
+      if b.save
+        format.html { redirect_to @project, notice: 'Presupuesto actualizado' }
+        format.json { render :show, status: :ok, location: @project }
+      else
+        format.html { redirect_to @project, notice: 'Ocurrio un problema al cambiar el presupuesto' }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
    # GET /projects/1/costs (show project costs)
   def costs
     @cost_payment_plan = @project.cost_payment_plan
@@ -192,6 +208,10 @@ class ProjectsController < ApplicationController
 
     def requirement_params
       params.permit(:requirement_id, :name, :description, :is_present)
+    end
+
+    def budget_params
+      params.permit(:activities_cost, :activities_reserve, :contingency_reserve, :managment_reserve)
     end
 
 end

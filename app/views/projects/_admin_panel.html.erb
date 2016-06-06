@@ -7,19 +7,45 @@
     <%= link_to 'Crear hitos', new_project_milestone_path(@project), class: 'button tiny info' %>
     <%= link_to 'Crear recursos humanos', new_human_resource_path, class: 'button tiny info' %>
     <%= link_to 'Crear interesados', new_project_stakeholder_path(@project), class: 'button tiny info' %>
+    <a href="#" data-reveal-id="define-budget" class="radius button tiny warning">Definir presupuesto</a>
     <h5><strong>Requisitos</strong></h5>
     <p>
       <ul>
       <% @project.requirements.each do |req| %>
         <li>
-          <%= req.requirement_id + ' | ' +  req.name + ' | ' + req.present? + " | " + req.description %>
+          <%= req.print %>
         </li>
       <% end -%>
       </ul>
     </p>
   </p>
-
+<!-- modal definir presupuesto -->
+      <div id="define-budget" class="reveal-modal" data-reveal aria-labelledby="budget-label-title" aria-hidden="true" role="dialog">
+        <h2 id="budget-label-title">Definir presupuesto</h2>
+        <%= form_for(@budget, url: edit_budget_project_path, method: :put, id: 'define_budget') do %>
+          <div class="field">
+            <%= label_tag  :activities_cost, 'Costo de actividades' %>
+            <%= number_field_tag :activities_cost, @budget.activities_cost %>
+          </div>
+          <div class="field">
+            <%= label_tag  :activities_reserve, 'Reserva de actividades' %>
+            <%= number_field_tag :activities_reserve, @budget.activities_reserve %>
+          </div>
+          <div class="field">
+            <%= label_tag  :contingency_reserve, 'Reserva de contingencia' %>
+            <%= number_field_tag :contingency_reserve, @budget.contingency_reserve %>
+          </div>
+          <div class="field">
+            <%= label_tag  :managment_reserve, 'Reserva de gestión' %>
+            <%= number_field_tag :managment_reserve, @budget.managment_reserve %>
+          </div>
+           <%= submit_tag 'Definir', class: 'button success tiny'  %> 
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        <% end -%>
+      </div>
   <br>
       <%= render 'create_requirement' %>
   </div>
   <br>
+
+  
