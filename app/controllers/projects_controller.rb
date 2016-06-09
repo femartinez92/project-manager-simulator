@@ -26,24 +26,20 @@ class ProjectsController < ApplicationController
     @stakeholders = @project.stakeholders
     @milestones = @project.milestones
     @budget = @project.budget
+    @budget_data = @budget.data_for_stacked_column
     if @project.simulator.nil?
       @project.simulator = Simulator.create!
       @project.save
     end
     @simulator = @project.simulator
+    @can_start_simulation = @simulator.can_start?
   end
 
   def clone
-    @project = Project.find(params[:id]).dup
-    cpp = CostPaymentPlan.create!
-    budget = Budget.create!
+    original_project = Project.find(params[:id])
+    @project = original_project.dup
     @project.save
-    @project.simulator = Project.find(params[:id]).simulator.clone(@project)
-    @project.cost_payment_plan = cpp
-    @project.budget = budget
-    @project.project_manager_id = current_project_manager.id
-    @project.is_admin_project = current_project_manager.has_role? :admin
-    @project.status = 'Inicio'
+    @project.clone_characteristics_from(original_project, current_project_manager)
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
@@ -202,6 +198,13 @@ class ProjectsController < ApplicationController
       else
         format.html { redirect_to project_path(@project), notice: 'Ocurrió un problema al tratar de guardar el requisito' }
       end
+    end
+  end
+
+  def execute_step
+    @project.simulator.execute_step
+    respond_to do |format|
+      format.html { redirect_to project_path(@project), notice: 'Etapa simuada' }
     end
   end
 

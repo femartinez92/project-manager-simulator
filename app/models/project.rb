@@ -24,11 +24,42 @@ class Project < ActiveRecord::Base
     human_resources.map { |hr| [hr.description, hr.id] }
   end
 
-  def clone_requirements(other_project_id)
-    requirements.each do |req|
+  # Clone all the elements and params of the original project to
+  # the new one
+  def clone_characteristics_from(original_project, current_project_manager)
+    # Create a new cost payment plan for this project
+    cpp = CostPaymentPlan.create!
+    self.cost_payment_plan = cpp
+    clone_budget_from(original_project)
+    clone_requirements_from(original_project)
+    clone_stakeholders_from(original_project)
+    self.simulator = original_project.simulator.clone
+    self.project_manager_id = current_project_manager.id
+    self.is_admin_project = current_project_manager.has_role? :admin
+    self.status = 'Inicio'
+    save
+  end
+
+  def clone_budget_from(original_project)
+    self.budget = original_project.budget.dup
+    save
+  end
+
+  # Clone the requirements of the project
+  def clone_requirements_from(original_project)
+    original_project.requirements.each do |req|
       r2 = req.dup
-      r2.project_id = other_project_id
+      r2.attributes = { project_id: id }
       r2.save
+    end
+  end
+
+  # Clone the stakeholders
+  def clone_stakeholders_from(original_project)
+    original_project.stakeholders.each do |stakeholder|
+      sh2 = stakeholder.dup
+      sh2.attributes =  { project_id: id, is_admin_stakeholder: false }
+      sh2.save
     end
   end
 

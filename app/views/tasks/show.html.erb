@@ -42,8 +42,10 @@
       </thead>
       <tbody>
         <% @hhrr_assigned.each do |hr| %>
-        <td><%= HumanResource.find(hr.human_resource_id).name %></td>
-        <td><%= hr.time %></td>
+        <tr>
+          <td><%= HumanResource.find(hr.human_resource_id).name %></td>
+          <td><%= hr.time %></td>
+        </tr>
         <% end -%>
       </tbody>
     </table>

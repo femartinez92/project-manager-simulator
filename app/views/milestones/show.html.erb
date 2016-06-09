@@ -16,8 +16,9 @@
 <% unless @admin %>
 <p>
 	<h4>Agregar actividades</h4>
-	<%= form_tag clone_tasks_url(:project_id => @project.id, :milestone_id => @milestone.id) %>
+	<%= form_tag clone_tasks_url(:project_id => @project.id, :milestone_id => @milestone.id) do %>
 	<%= render 'tasks/add_tasks_list', locals: { tasks: @posible_tasks } %>
+	<% end -%>
 </p>
 <% else %>
 	<%= link_to 'Crear nueva actividad', new_project_milestone_task_path(@project, @milestone), { class: 'button success tiny' } %> 

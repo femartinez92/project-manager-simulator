@@ -1,5 +1,6 @@
 <% estimated_payment_schedule = locals[:estimated_ps] %>
 <% real_payment_schedule = locals[:real_ps] %>
+<% budget_data = locals[:budget_data] %>
 <div class="large-12" id="costs">
   <div class="row">
     <div class="large-4 left">
@@ -14,6 +15,8 @@
     <% sum = 0 %>
     <%= line_chart [{ name: "Costo Estimado", data: estimated_payment_schedule }, { name: "Costo Real", data: real_payment_schedule }] %>
   </div>
-  <div class="large-4 right" id="indicators">Indicadores</div>
+  <div class="large-4 right" id="indicators">
+  <%= column_chart budget_data, stacked: true%>
+  </div>
 
  </div>

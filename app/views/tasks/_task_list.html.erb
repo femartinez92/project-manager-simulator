@@ -25,23 +25,19 @@
         <td><%= task.max_duration %></td>
         <% end -%>
         <td><%= task.pm_duration_estimation%></td>
-        <td><ul class='button-group radius'>
-            <li><%= link_to 'Ver detalles', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button info tiny' }%></li>
-            <li>
-              <a href="#" data-reveal-id="estimar-<%= task.id%>" class="radius button tiny secondary">Estimar</a>
-            </li>
-            <li><%= link_to 'Eliminar', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), class: 'button alert tiny' , method: :delete, data: { confirm: 'Estas seguro que deseas elimienar esta tarea?' } if @project.modificable? %></li>
-          </ul>
-        </td>
+        <td><%= link_to 'Ver detalles', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button info tiny' }%></td>
+        <td><a href="#" data-reveal-id="estimar-<%= task.id%>" class="radius button tiny secondary">Estimar</a></td>
+        <td><%= link_to 'Eliminar', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), class: 'button alert tiny' , method: :delete, data: { confirm: 'Estas seguro que deseas elimienar esta tarea?' } if @project.modificable? %></td>
       </tr>
       <!-- modal -->
       <div id="estimar-<%= task.id%>" class="reveal-modal" data-reveal aria-labelledby="task-<%= task.id%>-title" aria-hidden="true" role="dialog">
         <h2 id="task-<%= task.id%>-title">Estimar duración</h2>
-        <%= form_tag estimate_duration_project_milestone_task_path({:project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }) %>
+        <%= form_tag estimate_duration_project_milestone_task_path({:project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }) do %>
           <div class="field">
             <%= number_field_tag :pm_duration_estimation %>
           </div>
            <%= submit_tag 'Estimar', { class: 'button success tiny' } %> 
+        <% end -%>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
       </div>
     <% end %>

@@ -1,0 +1,9 @@
+<div class="row panel">
+  <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
+  <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
+  <div><strong>Estado para comenzar la simulación: </strong><%= @project.simulator.prevalidate %></div><br>
+  <div id="simulation_buttons">
+    <%= link_to 'Ejecutar simulación', execute_step_project_path, class: 'button tiny info' if @can_start_simulation %>
+  </div>
+</div>
+

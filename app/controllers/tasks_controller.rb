@@ -47,15 +47,17 @@ class TasksController < ApplicationController
     end
   end
 
-  # Allows a project manager to add tasks from
+  # Allows a project manager to add tasks from a milestone
   def clone
     @milestone = Milestone.find(params[:id])
     ids = params[:task_ids]
     ids.each do |id|
-      task = Task.find(id).dup
+      original_task = Task.find(id)
+      task = original_task.dup
       task.milestone_id = params[:id]
       task.is_admin_task = @admin
       task.save
+      original_task.clone_costs(task.id, @project.cost_payment_plan.id)
     end
     respond_to do |format|
       format.html { redirect_to project_milestone_path(@project, @milestone), notice: 'Tareas agregadas correctamente' }
@@ -68,6 +70,8 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.milestone_id = params[:milestone_id]
     @task.is_admin_task = @admin
+    @task.status = 'Pendiente'
+    @task.advance_percentage = 0
     respond_to do |format|
       if @task.save
         format.html { redirect_to project_milestone_path(@project, @milestone), notice: 'Task was successfully created.' }

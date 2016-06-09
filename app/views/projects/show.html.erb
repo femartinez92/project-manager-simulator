@@ -16,9 +16,9 @@
   <%= @project.start_date %>
   <br>
 
-  <%- if ( @project.modificable? and not @admin ) %>
-    <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
-    <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
+  <%- if not @admin %>
+  <!-- This panel allows the PM to play and organize the project-->
+    <%= render 'project_manager_panel' %>
   <% end -%>
 </p>
 <%- if @admin %>
@@ -26,7 +26,8 @@
 <% end -%>
 <div class="panel radius row">
   <%= render 'costs_panel', locals: { estimated_ps: @estimated_payment_schedule,
-                                      real_ps: @real_payment_schedule } %>
+                                      real_ps: @real_payment_schedule,
+                                      budget_data: @budget_data } %>
 </div>
 <br>
 <div class="panel radius row float">

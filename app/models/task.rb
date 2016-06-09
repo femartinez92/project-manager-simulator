@@ -6,6 +6,8 @@ class Task < ActiveRecord::Base
   has_many :human_resources, through: :resource_assignations
 
   scope :admin, -> { where(is_admin_task: true) }
+  scope :no_fake, -> { where(fake: false) }
+  scope :finished, -> { where(status: 'Terminada') }
   
   def add_milestone(milestone)
     self.milestone_id = milestone.id
@@ -24,6 +26,15 @@ class Task < ActiveRecord::Base
     return false if advance_percentage < percentage
     self.advance_percentage = percentage
     save
+  end
+
+  def clone_costs(other_task_id, cpp_id)
+    cost_lines.each do |cost_line|
+      cl = cost_line.dup
+      cl.task_id = other_task_id
+      cl.cost_payment_plan_id = cpp_id
+      cl.save
+    end
   end
 
 end
