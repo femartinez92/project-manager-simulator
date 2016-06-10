@@ -17,6 +17,8 @@
 #  admin_duration_estimation :integer
 #  advance_percentage        :integer
 #  status                    :string
+#  start_date                :date
+#  end_date                  :date
 #
 
 require 'test_helper'
