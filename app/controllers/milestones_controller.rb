@@ -7,8 +7,7 @@ class MilestonesController < ApplicationController
   def index
     @milestones = @project.milestones
     parent_project = Project.from_admin.where(name: @project.name).first
-    @posible_milestones = parent_project.milestones
-
+    @posible_milestones = parent_project.milestones.to_a.keep_if { |mile| @milestones.where(name: mile.name).length == 0 }
   end
 
   # GET /milestones/1
@@ -16,7 +15,7 @@ class MilestonesController < ApplicationController
   def show
     @tasks = @milestone.tasks
     source_milestone = Milestone.from_admin.where(name: @milestone.name).first
-    @posible_tasks = source_milestone.tasks
+    @posible_tasks = source_milestone.tasks.to_a.keep_if { |task| @tasks.where(name: task.name).length == 0 }
   end
 
   # Clone milestones

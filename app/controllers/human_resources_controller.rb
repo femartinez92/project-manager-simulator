@@ -19,8 +19,9 @@ class HumanResourcesController < ApplicationController
 
   # GET /human_resources_shop
   def shop
-    @human_resources = HumanResource.from_admin
+    human_resources = HumanResource.from_admin
     @your_human_resources = current_project_manager.projects.first.human_resources
+    @available = human_resources.to_a.keep_if { |hr| @your_human_resources.where(name: hr.name).length == 0 }
   end
 
   # POST /human_resources/:id/clone

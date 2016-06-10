@@ -18,18 +18,19 @@ class Simulator < ActiveRecord::Base
   def prevalidate
     project = Project.find(project_id)
     parent_project = Project.from_admin.where(name: project.name).first
-    possible_milestones = parent_project.milestones.no_fake
+    possible_milestones = parent_project.milestones
     milestones = project.milestones
-    possible_milestones.each do |pos_mile|
-      mile = milestones.where(name: pos_mile.name)
-      return 'Hay hitos importantes no agregados' if (mile.length == 0)
+    missing_imp_miles = possible_milestones.no_fake.length > milestones.no_fake.length
+    return 'Hay hitos importantes no agregados' if missing_imp_miles
+    milestones.each do |mile|
+      pos_mile = possible_milestones.where(name: mile.name).first
       possible_tasks = pos_mile.tasks.no_fake
-      tasks = mile.first.tasks
-      possible_tasks.each do |pos_task|
-        task = tasks.where(name: pos_task.name)
-        return 'Hay tareas importantes que aun no se han agregado' if (task.length == 0)
-        return 'Te falta estimar la duración de 1 o más tareas para poder comenzar' if !task.first.estimated?
-        return 'Algunas tareas no tienen suficientes recursos humanos' if task.first.resource_assignations.sum(:time) < task.first.pm_duration_estimation
+      tasks = mile.tasks
+      missing_imp_tasks = possible_tasks.length > tasks.no_fake.length
+      return 'Hay tareas importantes no se han agregadas' if missing_imp_tasks
+      tasks.each do |task|
+        return 'Te falta estimar la duración de 1 o más tareas para poder comenzar' if !task.estimated?
+        return 'Algunas tareas no tienen suficientes recursos humanos' if task.resource_assignations.sum(:time) < task.pm_duration_estimation
       end
     end
     'Ya puedes comenzar la simulación'

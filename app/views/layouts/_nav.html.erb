@@ -13,9 +13,9 @@
 	    <ul class="right">
 	    <%- if current_project_manager %>
 	      <%- if current_project_manager.has_role? :admin %>
-	      <li><a href="#">Administrador:</a></li>
+	      <li><a>Administrador:</a></li>
 	      <%- else %>
-	      <li><a href="#">Jefe de proyecto:</a></li>
+	      <li><a>Jefe de proyecto:</a></li>
 	      <% end -%>
 	      <li class="has-dropdown">
 	        <a href="#"> <%= current_project_manager.name %></a>

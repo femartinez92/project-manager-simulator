@@ -3,7 +3,7 @@
 <h3> Agregar hitos </h3>
 <br>
 <p> Aquí puedes seleccionar los hitos que quieras agregar a tu proyecto, debes agregar sólo los hitos que encuentres necesarios para el éxito del proyecto.</p>
-<%= form_tag clone_milestones_path %>
+<%= form_tag clone_milestones_path do %>
 <table>
   <thead>
     <tr>
@@ -28,3 +28,4 @@
   </tbody>
 </table>
 <%= submit_tag "Agregar", class: "button tiny success" %>
+<% end -%>

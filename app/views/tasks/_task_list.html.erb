@@ -5,11 +5,11 @@
       <th>Name</th>
       <th>Description</th>
       <%- if @project.modificable? %>
-      <th>Min (días) </th>
-      <th>Moda (días) </th>
-      <th>Max (días)</th>
+        <th>Min (días) </th>
+        <th>Moda (días) </th>
+        <th>Max (días)</th>
       <% end -%>
-      <th>Estimación duración (días)</th>
+      <th>Duración estimada (días)</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,13 +20,17 @@
         <td><%= task.name %></td>
         <td><%= task.description %></td>
         <%- if @project.modificable? %>
-        <td><%= task.min_duration %></td>
-        <td><%= task.most_probable_duration %></td>
-        <td><%= task.max_duration %></td>
+          <td><%= task.min_duration %></td>
+          <td><%= task.most_probable_duration %></td>
+          <td><%= task.max_duration %></td>
         <% end -%>
-        <td><%= task.pm_duration_estimation%></td>
+        <%- unless @admin %>
+          <td><%= task.pm_duration_estimation %></td>
+          <td><a href="#" data-reveal-id="estimar-<%= task.id%>" class="radius button tiny secondary">Estimar</a></td>
+        <% else %>
+          <td><%= task.admin_duration_estimation %></td>
+        <% end -%>
         <td><%= link_to 'Ver detalles', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), { class: 'button info tiny' }%></td>
-        <td><a href="#" data-reveal-id="estimar-<%= task.id%>" class="radius button tiny secondary">Estimar</a></td>
         <td><%= link_to 'Eliminar', project_milestone_task_path({ :project_id => @project.id, :milestone_id => @milestone.id, :id => task.id }), class: 'button alert tiny' , method: :delete, data: { confirm: 'Estas seguro que deseas elimienar esta tarea?' } if @project.modificable? %></td>
       </tr>
       <!-- modal -->

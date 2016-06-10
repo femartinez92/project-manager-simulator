@@ -19,6 +19,7 @@
   <%= render 'costs_list', locals: { costs_list: @costs_list} %>
 </p>
 <p>
+<% unless @admin %>
   <h4>Recursos humanos</h4>
   <!-- Crear nueva asignación-->
   <div class="panel">
@@ -50,7 +51,7 @@
       </tbody>
     </table>
   </div>
+  <% end -%>
 </p>
-<h4></h4>
 
 
