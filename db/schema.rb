@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606224606) do
+ActiveRecord::Schema.define(version: 20160610215118) do
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "project_id"
@@ -204,6 +204,8 @@ ActiveRecord::Schema.define(version: 20160606224606) do
     t.integer  "admin_duration_estimation"
     t.integer  "advance_percentage"
     t.string   "status"
+    t.date     "start_date"
+    t.date     "end_date"
   end
 
 end

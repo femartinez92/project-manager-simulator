@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: simulators
+#
+#  id                        :integer          not null, primary key
+#  project_id                :integer
+#  step_length               :integer
+#  resource_unavailable_prob :decimal(, )
+#  scope_modify_prob         :decimal(, )
+#  risk_activation_prob      :decimal(, )
+#  plan_change_prob          :decimal(, )
+#  day                       :integer
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#
+
 class Simulator < ActiveRecord::Base
   belongs_to :project
 
@@ -8,6 +24,7 @@ class Simulator < ActiveRecord::Base
   def execute_step
     r = Random.new
     r.rand
+    raise "exception"
   end
 
   # This method is to check the initial conditions 

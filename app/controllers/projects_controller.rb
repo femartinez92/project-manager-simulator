@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement, :edit_budget, :configure_simulator]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :costs, :create_requirement, :edit_budget, :configure_simulator, :execute_step]
   before_action :set_admin
   before_action :authenticate_project_manager!
   # GET /projects
@@ -148,7 +148,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # ---- Scope statement ---- #
+  # ---- SCOPE STATEMENT ---- #
 
   # GET /
   # We select the project of the project type assigned to this manager

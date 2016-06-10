@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: cost_payment_plans
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  project_id :integer
+#
+
 class CostPaymentPlan < ActiveRecord::Base
   has_many :cost_lines
 

@@ -16,6 +16,7 @@ Things you may want to cover:
 * Run the server
 cd apps/project-manager-simulator
 git pull origin master
+RAILS_ENV=production bundle install
 RAILS_ENV=production rake db:migrate
 RAILS_ENV=production rake assets:precompile
 ps aux | grep unicorn

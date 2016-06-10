@@ -58,6 +58,10 @@ group :development, :test do
   # Console view
   gem 'hirb'
   #Better errors
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  # Annotate models
+  gem 'annotate' 
 
 end
 

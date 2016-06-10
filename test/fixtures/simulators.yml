@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: simulators
+#
+#  id                        :integer          not null, primary key
+#  project_id                :integer
+#  step_length               :integer
+#  resource_unavailable_prob :decimal(, )
+#  scope_modify_prob         :decimal(, )
+#  risk_activation_prob      :decimal(, )
+#  plan_change_prob          :decimal(, )
+#  day                       :integer
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
