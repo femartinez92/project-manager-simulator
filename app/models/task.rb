@@ -60,4 +60,34 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def update_start_date
+    task_ids_precedent = Precedent.select(:predecessor_id).where(dependent_id: self.id)
+    start_date = latest_end_date(task_ids_precedent)
+    update_end_date
+  end
+
+  def update_end_date
+    if end_date != start_date + pm_duration_estimation.days
+      end_date = start_date + pm_duration_estimation.days
+      update_dependent_dates(end_date)
+    end
+  end
+
+  def latest_end_date(task_ids_precedent)
+    # e_date = self.milestone.project.start_date
+    task_ids_precedent.reduce(pjct_start_date) { |e_date, task_id| Task.find(task_id).end_date}
+    task_ids_precedent.each do |task_id|
+      task = Task.find(task_id)
+      e_date = task.end_date unless task.end_date < e_date and task.end_date.nil?
+    end
+  end
+
+  def pjct_start_date
+    self.milestone.project.start_date
+  end
+
+  def update_dependent_dates(end_date)
+    task_ids_dependents = Precedent.select(:dependent_id).where(predecessor_id: self.id)
+  end
+
 end

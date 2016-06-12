@@ -53,6 +53,9 @@ Rails.application.routes.draw do
     # Assign human resources to task
     post 'projects/:project_id/milestones/:milestone_id/tasks/:id/assign_resource', to: 'tasks#assign_resource', as: 'assign_resource'
 
+    # Edit requirements
+    put 'projects/:project_id/edit_requirement/:id', to: 'projects#edit_requirement', as: 'edit_requirement'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

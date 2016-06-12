@@ -40,6 +40,15 @@ class Project < ActiveRecord::Base
     human_resources.map { |hr| [hr.description, hr.id] }
   end
 
+  def tasks_for_timeline
+    tasks_f_time = []
+    milestones.each do |mile|
+      mile.tasks do |task|
+        tasks_f_time << [task.name, task.start_date, task.end_date]
+      end
+    end
+  end
+
   # Clone all the elements and params of the original project to
   # the new one
   def clone_characteristics_from(original_project, current_project_manager)

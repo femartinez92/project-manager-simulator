@@ -31,6 +31,7 @@ class ProjectsController < ApplicationController
       @project.simulator = Simulator.create!
       @project.save
     end
+    @tasks_timeline_data = @project.tasks_for_timeline
     @simulator = @project.simulator
     @can_start_simulation = @simulator.can_start?
   end
@@ -183,6 +184,18 @@ class ProjectsController < ApplicationController
     req.project_id = params[:id]
     respond_to do |format|
       if req.save
+        format.html { redirect_to project_path(@project), notice: 'Requisito agregado correctamente' }
+      else
+        format.html { redirect_to project_path(@project), notice: 'Ocurrió un problema al tratar de guardar el requisito' }
+      end
+    end
+  end
+
+  def edit_requirement
+    @project = Project.find(params[:project_id])
+    req = Requirement.find(params[:id])
+    respond_to do |format|
+      if req.update(requirement_params)
         format.html { redirect_to project_path(@project), notice: 'Requisito agregado correctamente' }
       else
         format.html { redirect_to project_path(@project), notice: 'Ocurrió un problema al tratar de guardar el requisito' }

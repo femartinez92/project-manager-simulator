@@ -16,6 +16,7 @@
 
 class Milestone < ActiveRecord::Base
   has_many :tasks
+  belongs_to :project
 
   scope :from_admin, -> { where(is_admin_milestone: true) }
   scope :no_fake,  -> { where(fake: false) }

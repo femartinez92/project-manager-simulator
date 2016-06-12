@@ -19,7 +19,8 @@
   <p>
     <ul>
       <% @project.requirements.each do |req| %>
-        <li> <%= req.print %> </li>
+        <li><a href="#" data-reveal-id="editar-<%= req.id%>" class="radius button tiny secondary"> <%= req.print  %></a> </li>
+        <%= render 'edit_requirement', locals: { requirement: req } %>
       <% end -%>
     </ul>
   </p>
