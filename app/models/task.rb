@@ -97,7 +97,7 @@ class Task < ActiveRecord::Base
   def update_start_date(s_date)
     if delay_start(s_date)
       if delay_end(start_date + pm_duration_estimation)
-        dependent_tasks_id = Precedent.select(:dependent_id).where(predecessor_id: id)
+        dependent_tasks_id = Precedent.where(predecessor_id: id).pluck(:dependent_id)
         dependent_tasks_id.each do |t_id|
           Task.find(t_id).update_start_date(end_date)
         end
@@ -110,7 +110,7 @@ class Task < ActiveRecord::Base
   # @ds : days of delay, if negative => advance (not implemented yet)
   def update_end_date(ds)
     if delay_end(end_date + ds.days)
-      dependent_tasks_id = Precedent.select(:dependent_id).where(predecessor_id: id)
+      dependent_tasks_id = Precedent.where(predecessor_id: id).pluck(:dependent_id)
       dependent_tasks_id.each do |t_id|
         Task.find(t_id).update_start_date(end_date)
       end
