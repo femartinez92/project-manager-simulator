@@ -86,9 +86,11 @@ class MilestonesController < ApplicationController
   
   # GET projects/1/precedents
   def precedent_index
-    @tasks = @project.milestones.first.tasks
+    @tasks ||= []
     @project.milestones.each do |miles|
-      @tasks << miles.tasks
+      miles.tasks.each do |task|
+        @tasks << task
+      end
     end
     @precedents = Precedent.where(project_id: @project.id)
     

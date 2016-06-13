@@ -1,4 +1,3 @@
-
 <p>
   <h1>
     <%= @project.name %>
@@ -6,14 +5,14 @@
 </p>
 
 <p>
-  <strong>Semana Actual:</strong>
-  <%= @project.actual_week %>
-  <br>
   <strong> Estado del proyecto: </strong>
   <%= @project.status %>
   <br>
   <strong> Fecha de inicio: </strong>
   <%= @project.start_date %>
+  <br>
+  <strong>Día de la simulación:</strong>
+  <%= @simulator.day %>
   <br>
 
   <%- if not @admin %>
@@ -30,9 +29,12 @@
                                       budget_data: @budget_data } %>
 </div>
 <br>
-<div class="panel radius row">
-  <%= timeline @tasks_timeline_data %>
-</div>
+<%- if (@can_start_simulation and not @admin) %>
+  <div class="panel radius row">
+    <h3>Vista Gantt</h3>
+    <%= timeline @tasks_timeline_data, colors: ['#8d8'] %>
+  </div>
+<% end -%>
 <br>
 <div class="panel radius row float">
   <div class="panel callout radius large-7 left">

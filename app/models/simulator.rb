@@ -24,7 +24,10 @@ class Simulator < ActiveRecord::Base
   def execute_step
     r = Random.new
     r.rand
-    raise "exception"
+    self.day = 0 if day.nil?
+    self.day += step_length
+    
+    self.save
   end
 
   # This method is to check the initial conditions 
@@ -76,4 +79,9 @@ class Simulator < ActiveRecord::Base
     s2
   end
 
+  private
+
+  def set_project
+    Project.find(project_id)
+  end
 end

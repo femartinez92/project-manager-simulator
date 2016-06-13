@@ -10,9 +10,9 @@
 	<tbody>
 		<% @precedents.each do |precedent| %>
 		<tr>
-			<td><%= @tasks.where(id: precedent.predecessor_id).first.name if @tasks.where(id: precedent.predecessor_id).first %> </td>
+			<td><%= @tasks.find { |task| task.id == precedent.predecessor_id }.name %> </td>
 			<td>
-				<%= @tasks.where(id: precedent.dependent_id).first.name if @tasks.where(id: precedent.dependent_id).first %>
+				<%= @tasks.find { |task| task.id == precedent.dependent_id }.name %>
 				
 			</td>
 		</tr>
