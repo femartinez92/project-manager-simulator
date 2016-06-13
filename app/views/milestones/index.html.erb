@@ -1,9 +1,11 @@
+<div class="row">
+  <p></p>
+ <%= link_to 'Volver a proyecto', project_path(@project), class: 'button tiny secondary' %>
+ <%= link_to 'Ver precedencias de tareas', precedents_path, class: 'button tiny info' %>
+</div>
 <%- if @milestones.length > 0 %>
   <%= render 'milestones_list', locals: { milestones: @milestones } %>
 <% end -%>
-<br>
- <%= link_to 'Ver precedencias de tareas', precedents_path, class: 'button tiny info' %>
- <%= link_to 'Volver a proyecto', project_path(@project), class: 'button tiny secondary' %>
 <br>
 <%- if @project.modificable? and not(@admin)%>
   <%= render 'add_milestones_list', locals: { milestones: @posible_milestones } %>

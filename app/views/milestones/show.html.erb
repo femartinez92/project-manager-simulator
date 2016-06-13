@@ -1,4 +1,7 @@
-
+<div class="row">
+  <p></p>
+  <%= link_to 'Volver a listado de hitos', project_milestones_path(@project), class: 'button secondary tiny' %>
+</div>
 <p>
   <h2><%= @milestone.name.camelize %></h2>
   <strong> Fecha término: <%= @milestone.due_date %> </strong>
@@ -8,21 +11,20 @@
 </p>
 
 <p>
- 	<h4>Lista de actividades para lograrlo</h4>
-	<%= render 'tasks/task_list', :locals => {tasks: @tasks} %>
+  <h4>Lista de actividades para lograrlo</h4>
+  <%= render 'tasks/task_list', :locals => {tasks: @tasks} %>
 </p>
-<%= link_to 'Atrás', project_milestones_path(@project), class: 'button secondary tiny' %>
 
 <% unless @admin %>
 <p>
-	<h4>Agregar actividades</h4>
-	<%= form_tag clone_tasks_url(:project_id => @project.id, :milestone_id => @milestone.id) do %>
-	<%= render 'tasks/add_tasks_list', locals: { tasks: @posible_tasks } %>
-	<% end -%>
+  <h4>Agregar actividades</h4>
+  <%= form_tag clone_tasks_url(:project_id => @project.id, :milestone_id => @milestone.id) do %>
+  <%= render 'tasks/add_tasks_list', locals: { tasks: @posible_tasks } %>
+  <% end -%>
 </p>
 <% else %>
-	<%= link_to 'Crear nueva actividad', new_project_milestone_task_path(@project, @milestone), { class: 'button success tiny' } %> 
-	<%= link_to 'Edit', edit_project_milestone_path(@project, @milestone) %> |
-	<%= link_to 'Back', project_milestones_path(@project) %>
+  <%= link_to 'Crear nueva actividad', new_project_milestone_task_path(@project, @milestone), { class: 'button success tiny' } %> 
+  <%= link_to 'Edit', edit_project_milestone_path(@project, @milestone) %> |
+  <%= link_to 'Back', project_milestones_path(@project) %>
 <% end -%>
 
