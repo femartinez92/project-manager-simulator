@@ -28,6 +28,7 @@ class Task < ActiveRecord::Base
   has_many :resource_assignations
   has_many :human_resources, through: :resource_assignations
 
+  default_scope { order(start_date: :asc, name: :asc) }
   scope :admin, -> { where(is_admin_task: true) }
   scope :no_fake, -> { where(fake: false) }
   scope :finished, -> { where(status: 'Terminada') }
