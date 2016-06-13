@@ -46,7 +46,7 @@ class Project < ActiveRecord::Base
       mile.tasks.each do |task|
         task.update(start_date: start_date) if task.start_date.nil?
         task.update(end_date: task.start_date + task.pm_duration_estimation.days) if task.end_date.nil?
-        tasks_f_time << [task.name, task.start_date, task.end_date]
+        tasks_f_time << [task.name + ' | '+ mile.id.to_s, task.start_date, task.end_date]
       end
     end
     p tasks_f_time
