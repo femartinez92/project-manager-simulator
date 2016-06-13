@@ -31,9 +31,9 @@ class ProjectsController < ApplicationController
       @project.simulator = Simulator.create!
       @project.save
     end
-    @tasks_timeline_data = @project.tasks_for_timeline unless @admin
     @simulator = @project.simulator
     @can_start_simulation = @simulator.can_start?
+    @tasks_timeline_data = @project.tasks_for_timeline if not @admin and @can_start_simulation
   end
 
   def clone
