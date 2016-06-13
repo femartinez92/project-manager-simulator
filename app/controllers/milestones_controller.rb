@@ -99,9 +99,11 @@ class MilestonesController < ApplicationController
 
   # GET projects/1/precedents/new
   def new_precedent
-    @tasks = @project.milestones.first.tasks
+    @tasks ||= []
     @project.milestones.each do |miles|
-      @tasks << miles.tasks
+      miles.tasks.each do |task|
+        @tasks << task
+      end
     end
   end
 

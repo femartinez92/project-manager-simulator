@@ -15,7 +15,7 @@
 </p>
 <p>
   <h4> Costos asociados </h4>
-  <%= link_to 'Nuevo costo', new_task_cost_path({ :project_id => @project.id, :milestone_id => @milestone.id, :task_id => @task.id }), class:'button tiny success'%>
+  <%= link_to 'Nuevo costo', new_task_cost_path({ :project_id => @project.id, :milestone_id => @milestone.id, :task_id => @task.id }), class:'button tiny success' if @admin %>
   <%= render 'costs_list', locals: { costs_list: @costs_list} %>
 </p>
 <p>
