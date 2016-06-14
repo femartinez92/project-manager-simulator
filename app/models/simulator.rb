@@ -49,6 +49,7 @@ class Simulator < ActiveRecord::Base
         n_days = g_random(1, 4)
         a_tasks[ran2].update_end_date(n_days)
         self.events_description += "Se ha atrasado la tarea #{ a_tasks[ran2].name } en #{n_days} días\r\n"
+      end
     end
     if generate_random <= risk_activation_prob
       n_days  = g_random(2, 4)
