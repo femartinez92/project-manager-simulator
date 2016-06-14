@@ -3,7 +3,16 @@
   <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
   <div><strong>Estado para comenzar la simulación: </strong><%= @project.simulator.prevalidate %></div><br>
   <div id="simulation_buttons">
-    <%= link_to 'Ejecutar simulación', execute_step_project_path, class: 'button tiny info' if @can_start_simulation %>
+    <%= link_to 'Ejecutar etapa simulación', execute_step_project_path, class: 'button tiny success' if @can_start_simulation %>
+    <a href="#" data-reveal-id="historia-simulacion" class="radius button tiny info">Historia de la simulación</a>
+  </div>
+
+
+  <!-- modal -->
+  <div id="historia-simulacion" class="reveal-modal" data-reveal aria-labelledby="historia-simulacion-title" aria-hidden="true" role="dialog">
+    <h2 id="historia-simulacion-title">Historia de la simulación</h2>
+    <%= simple_format(@simulator.events_description) %>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 </div>
 

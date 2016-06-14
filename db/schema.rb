@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160610215118) do
+ActiveRecord::Schema.define(version: 20160614021107) do
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "project_id"
@@ -169,6 +169,8 @@ ActiveRecord::Schema.define(version: 20160610215118) do
     t.integer  "day"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "initial_budget"
+    t.text     "events_description"
   end
 
   create_table "stakeholders", force: :cascade do |t|

@@ -14,7 +14,7 @@
 
 class Requirement < ActiveRecord::Base
   scope :present, -> { where(is_present: true) }
-
+  scope :not_present, -> { where(is_present: false) }
   def present?
     if is_present
       return 'Presente'

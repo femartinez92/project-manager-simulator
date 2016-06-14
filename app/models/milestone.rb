@@ -20,6 +20,7 @@ class Milestone < ActiveRecord::Base
 
   scope :from_admin, -> { where(is_admin_milestone: true) }
   scope :no_fake,  -> { where(fake: false) }
+  scope :not_aproved, -> {where.not(status: 'Aprobado')}
   scope :aproved, -> { where(status: 'Aprobado') }
 
   # Method for assigning a milestone to the task
@@ -27,4 +28,12 @@ class Milestone < ActiveRecord::Base
     task.milestone_id = id
     task.save
   end
+
+  def ready?
+    tasks.each do |task|
+      return false if task.status != 'Finished'
+    end
+    true
+  end
+
 end

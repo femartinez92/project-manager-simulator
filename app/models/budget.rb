@@ -27,17 +27,30 @@ class Budget < ActiveRecord::Base
       managment_reserve + profit
   end
 
+  def total_used
+    activities_cost_used + activities_reserve_used + contingency_reserve_used +
+    managment_reserve_used
+  end
+
+  def actual_earnings
+    total - total_used
+  end
+
   def data_for_stacked_column
     [
       {
         name: 'Disponible',
-        data: [disp_act_cost, disp_act_res, disp_cont_res, disp_mng_res]
+        data: [disp_tot_cost, disp_act_cost, disp_act_res, disp_cont_res, disp_mng_res]
       },
       {
         name: 'Usado',
-        data: [used_act_cost, used_act_res, used_cont_res, used_mng_res]
+        data: [used_tot_cost, used_act_cost, used_act_res, used_cont_res, used_mng_res]
       }
     ]
+  end
+
+  def disp_tot_cost
+    ['Costo total', actual_earnings]
   end
 
   def disp_act_cost
@@ -66,6 +79,10 @@ class Budget < ActiveRecord::Base
     self.managment_reserve_used = 0 if self.managment_reserve_used.nil?
     save
     ['Reserva de gestión', managment_reserve - managment_reserve_used]
+  end
+
+  def used_tot_cost
+    ['Costo total', total_used]
   end
 
   def used_act_cost

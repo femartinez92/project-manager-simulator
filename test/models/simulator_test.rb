@@ -12,6 +12,8 @@
 #  day                       :integer
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  initial_budget            :integer
+#  events_description        :text
 #
 
 require 'test_helper'

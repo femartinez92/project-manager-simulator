@@ -12,22 +12,99 @@
 #  day                       :integer
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  initial_budget            :integer
+#  events_description        :text
 #
 
 class Simulator < ActiveRecord::Base
   belongs_to :project
 
   def win?
-    Project.find(project_id).win?
+    project.win?
   end
 
   def execute_step
+    self.day = 0 if day.nil?
+    self.initial_budget ||= project.budget.total
+    self.events_description ||= ''
+    save
+    hhrr = project.human_resources
+    hhrr.update_all(is_available: true)
+    ran = g_random(0,hhrr.length - 1)
+    
+    # Generate events
+    self.events_description += "EVENTOS \r\n"
+    if generate_random <= resource_unavailable_prob
+      hhrr[ran].is_available = false
+      self.events_description += "El empleado #{ hhrr[ran].name }, se ha reportado enfermo \r\n"
+    end
+    if generate_random <= scope_modify_prob
+      req = project.requirements.not_present.first
+      self.events_description += "Se debe agregar el requisito #{ req.name }\r\n" unless req.nil?
+    end
+    if generate_random <= plan_change_prob
+      a_tasks = project.active_tasks
+      if a_tasks.length > 0
+        ran2 = g_random(0, a_tasks.length - 1)
+        n_days = g_random(1, 4)
+        a_tasks[ran2].update_end_date(n_days)
+        self.events_description += "Se ha atrasado la tarea #{ a_tasks[ran2].name } en #{n_days} días\r\n"
+    end
+    if generate_random <= risk_activation_prob
+      n_days  = g_random(2, 4)
+      activate_risk(n_days)
+      self.events_description += "Se ha activado un riesgo, todas las tareas en ejecución se atrasan #{n_days} días\r\n"
+    end
+
+    # Advance days of the step
+    1.upto(step_length) do |i|
+      self.update(day: day + 1)
+      self.events_description += "DIA #{day} \r\n"
+      actual_date = project.start_date + day.days
+      week = (day/7.0).ceil
+      # Update the week of the project
+      project.update(actual_week: week) if project.actual_week != week
+      # Advance active tasks and today starting tasks
+      project.active_tasks.map { |task| task.advance(1) }
+      project.waiting_tasks.map { |task| task.advance(1) if task.start_date == actual_date }
+      # Aprove milestones if needed
+      project.milestones.not_aproved.each do |mile|
+        if mile.ready?
+          mile.update(status: 'Aprobado')
+          self.events_description += "Se ha aprobado el hito: #{mile.name}\r\n"
+        end
+      end
+      # Pay costs
+      cpp = project.cost_payment_plan
+      cpp.cost_lines.unpaid.payment_week(week).each do |cl|
+        cl.pay(cl.amount, week)
+        project.use_budget(cl)
+      end
+      project.pay_salaries(week) if week%4 == 0
+      # Employee returns to work with probability 0.5
+      if generate_random < 0.5
+        self.events_description += "El empleado #{ hhrr[ran].name }, ha vuelto a trabajar" unless hhrr[ran].is_available
+        hhrr[ran].is_available = true
+      end
+    end
+    self.save
+  end
+
+  
+  # Method for generating random numbers
+  def generate_random
     r = Random.new
     r.rand
-    self.day = 0 if day.nil?
-    self.day += step_length
-    
-    self.save
+  end
+
+  def g_random(a, b)
+    r = Random.new
+    r.rand(a..b)
+  end
+
+  # Method for activating a risk in the project
+  def activate_risk(n_days)
+    project.active_tasks.map{ |a_task| a_task.update_end_date(n_days) }
   end
 
   # This method is to check the initial conditions 
@@ -79,9 +156,4 @@ class Simulator < ActiveRecord::Base
     s2
   end
 
-  private
-
-  def set_project
-    Project.find(project_id)
-  end
 end

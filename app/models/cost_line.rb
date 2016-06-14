@@ -25,6 +25,8 @@ class CostLine < ActiveRecord::Base
   scope :paid, -> { where(status: 'Pagado') }
   scope :unpaid, -> { where(status: 'Pendiente') }
 
+  scope :payment_week, ->(p_week) { where(payment_week: p_week) }
+
   def pay(r_am, r_pd)
     self.real_amount = r_am
     self.real_payment_week = r_pd

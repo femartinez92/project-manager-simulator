@@ -40,6 +40,37 @@ class Project < ActiveRecord::Base
     human_resources.map { |hr| [hr.description, hr.id] }
   end
 
+  def pay_salaries(week)
+    cpp = cost_payment_plan
+    human_resources.each do |hr|
+      nyd = 'Pago sueldo ' + hr.name
+      am = hr.salary
+      cl = CostLine.new(name: nyd, description: nyd,
+                        amount: am, real_amount: am,
+                        payment_week: week, real_payment_week: week,
+                        cost_payment_plan_id: cpp.id, status: 'Pagado',
+                        funding_source: 'Costo de actividades')
+      cl.save
+      use_budget(cl)
+    end
+  end
+
+  # Method used to increase the used amount of the budget
+  def use_budget(cost_line)
+    bud = budget
+    case cost_line.funding_source
+    when 'Costo de actividades'
+      bud.activities_cost_used += cost_line.real_amount
+    when 'Reserva de actividades'
+      bud.activities_reserve_used += cost_line.real_amount
+    when 'Reserva de contingencias'
+      bud.contingency_reserve_used += cost_line.real_amount
+    when 'Reserva de gestión'
+      bud.managment_reserve_used += cost_line.real_amount
+    end
+    bud.save 
+  end
+
   def tasks_for_timeline
     tasks_f_time ||= []
     milestones.each do |mile|
@@ -52,10 +83,40 @@ class Project < ActiveRecord::Base
     p tasks_f_time
   end
 
-  def tasks
+  def all_tasks
     tasks ||= []
     milestones.each do |mile|
       mile.tasks.each do |task|
+        tasks << task
+      end
+    end
+    tasks
+  end
+
+  def active_tasks
+    tasks ||= []
+    milestones.each do |mile|
+      mile.tasks.active.each do |task|
+        tasks << task
+      end
+    end
+    tasks
+  end
+
+  def waiting_tasks
+    tasks ||= []
+    milestones.each do |mile|
+      mile.tasks.waiting.each do |task|
+        tasks << task
+      end
+    end
+    tasks
+  end
+
+  def finished_tasks
+    tasks ||= []
+    milestones.each do |mile|
+      mile.tasks.finished.each do |task|
         tasks << task
       end
     end

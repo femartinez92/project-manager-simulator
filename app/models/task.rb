@@ -31,6 +31,11 @@ class Task < ActiveRecord::Base
   default_scope { order(start_date: :asc, name: :asc) }
   scope :admin, -> { where(is_admin_task: true) }
   scope :no_fake, -> { where(fake: false) }
+
+  scope :start_today, ->(actual_date) { where(start_date: actual_date) }
+
+  scope :waiting, -> { where(status: 'Pendiente') }
+  scope :active, -> { where(status: 'En proceso') }
   scope :finished, -> { where(status: 'Terminada') }
   scope :unfinished, -> { where.not(status: 'Terminada') }
   
@@ -40,17 +45,30 @@ class Task < ActiveRecord::Base
   end
 
   # Vemos si ya se estimo la duracion de la tarea
-
   def estimated?
     return false if pm_duration_estimation.nil?
     true
   end
 
-  def advance(percentage)
+  # Defines the advance of a task to acomplish 100%
+  def daily_advance
+    1.0 / admin_duration_estimation
+  end
+
+  def advance(days)
     return false unless advance_percentage.nil?
-    return false if advance_percentage < percentage
-    self.advance_percentage = percentage
-    save
+    if human_resources.available.length > 0
+      self.advance_percentage += (daily_advance * days * 100).ceil
+      self.status = 'En proceso' if self.advance_percentage > 0
+      self.status = 'Terminada' if self.advance_percentage == 100
+      save
+    else
+      self.update_end_date(1)
+      self.advance_percentage += (daily_advance * days * 100).ceil
+      self.status = 'En proceso' if self.advance_percentage > 0
+      self.status = 'Terminada' if self.advance_percentage == 100
+      save
+    end
   end
 
   def clone_costs(other_task_id, cpp_id)
@@ -136,10 +154,6 @@ class Task < ActiveRecord::Base
 
   def pjct_start_date
     milestone.project.start_date
-  end
-
-  def delay_dependent_dates(end_date)
-    task_ids_dependents = Precedent.select(:dependent_id).where(predecessor_id: id)
   end
 
 end
