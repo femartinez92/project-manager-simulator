@@ -15,12 +15,12 @@
 #
 
 class Milestone < ActiveRecord::Base
-  has_many :tasks
+  has_many :tasks, dependent: :destroy
   belongs_to :project
 
   scope :from_admin, -> { where(is_admin_milestone: true) }
   scope :no_fake,  -> { where(fake: false) }
-  scope :not_aproved, -> {where.not(status: 'Aprobado')}
+  scope :not_aproved, -> { where("milestones.status != 'Aprobado' OR milestones.status IS NULL ") }
   scope :aproved, -> { where(status: 'Aprobado') }
 
   # Method for assigning a milestone to the task
@@ -31,9 +31,15 @@ class Milestone < ActiveRecord::Base
 
   def ready?
     tasks.each do |task|
-      return false if task.status != 'Finished'
+      p task.status
+      return false if task.status != 'Terminada'
     end
     true
+  end
+
+  def restart
+    tasks.map { |task| task.restart }
+    update(status: 'No aprobado')
   end
 
 end

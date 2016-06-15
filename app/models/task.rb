@@ -25,7 +25,7 @@ class Task < ActiveRecord::Base
   resourcify
   belongs_to :milestone
   has_many :cost_lines
-  has_many :resource_assignations
+  has_many :resource_assignations, dependent: :destroy
   has_many :human_resources, through: :resource_assignations
 
   default_scope { order(start_date: :asc, name: :asc) }
@@ -44,6 +44,9 @@ class Task < ActiveRecord::Base
     save
   end
 
+  def restart
+    update(advance_percentage: 0, status: 'Pendiente', start_date: nil, end_date: nil)
+  end
   # Vemos si ya se estimo la duracion de la tarea
   def estimated?
     return false if pm_duration_estimation.nil?
@@ -52,21 +55,23 @@ class Task < ActiveRecord::Base
 
   # Defines the advance of a task to acomplish 100%
   def daily_advance
-    1.0 / admin_duration_estimation
+    actual_duration = (end_date - start_date).to_i
+    return 1.0 / admin_duration_estimation if actual_duration < admin_duration_estimation
+    1.0 / actual_duration
   end
 
   def advance(days)
-    return false unless advance_percentage.nil?
+    self.advance_percentage ||= 0
     if human_resources.available.length > 0
       self.advance_percentage += (daily_advance * days * 100).ceil
       self.status = 'En proceso' if self.advance_percentage > 0
-      self.status = 'Terminada' if self.advance_percentage == 100
+      self.status = 'Terminada' if self.advance_percentage >= 100
       save
     else
       self.update_end_date(1)
       self.advance_percentage += (daily_advance * days * 100).ceil
       self.status = 'En proceso' if self.advance_percentage > 0
-      self.status = 'Terminada' if self.advance_percentage == 100
+      self.status = 'Terminada' if self.advance_percentage >= 100
       save
     end
   end
@@ -128,7 +133,10 @@ class Task < ActiveRecord::Base
   # ends later than it was supposed 
   # @ds : days of delay, if negative => advance (not implemented yet)
   def update_end_date(ds)
+    actual_duration = (end_date -start_date).to_i
+    days_worked = advance_percentage / 100.0 * (actual_duration) 
     if delay_end(end_date + ds.days)
+      self.update(advance_percentage: (days_worked / (actual_duration + ds)).to_i)
       dependent_tasks_id = Precedent.where(predecessor_id: id).pluck(:dependent_id)
       dependent_tasks_id.each do |t_id|
         Task.find(t_id).update_start_date(end_date)
@@ -154,6 +162,10 @@ class Task < ActiveRecord::Base
 
   def pjct_start_date
     milestone.project.start_date
+  end
+
+  def simulation_date
+    pjct_start_date + milestone.project.simulator.day.days
   end
 
 end

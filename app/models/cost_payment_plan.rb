@@ -9,7 +9,7 @@
 #
 
 class CostPaymentPlan < ActiveRecord::Base
-  has_many :cost_lines
+  has_many :cost_lines, dependent: :destroy
 
   def estimated_payment_schedule(project)
     ps ||= []
@@ -42,6 +42,10 @@ class CostPaymentPlan < ActiveRecord::Base
   # This method returns the total cost of the project with the estimated costs not yet paid
   def total
     cost_lines.unpaid.sum(:amount) + cost_lines.paid.sum(:real_amount)
+  end
+
+  def restart
+    cost_lines.map { |cl| cl.restart }
   end
 
 end

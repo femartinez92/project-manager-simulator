@@ -14,6 +14,8 @@
 #  updated_at                :datetime         not null
 #  initial_budget            :integer
 #  events_description        :text
+#  original_duration         :integer
+#  actual_duration           :integer
 #
 
 require 'test_helper'

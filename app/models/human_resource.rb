@@ -20,7 +20,7 @@ class HumanResource < ActiveRecord::Base
   belongs_to :project
 
   # Human resources are assigned to tasks
-  has_many :resource_assignations
+  has_many :resource_assignations, dependent: :destroy
   has_many :tasks, through: :resource_assignations
 
   # This column determines if the human resource can be cloned

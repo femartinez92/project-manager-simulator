@@ -56,6 +56,7 @@ class TasksController < ApplicationController
       task = original_task.dup
       task.milestone_id = params[:id]
       task.is_admin_task = @admin
+      task.status = 'Pendiente'
       task.save
       original_task.clone_costs(task.id, @project.cost_payment_plan.id)
     end

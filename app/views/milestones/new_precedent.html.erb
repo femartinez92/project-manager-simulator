@@ -9,12 +9,12 @@
   <table>
     <thead>
       <th>Tarea predecesora</th>
-      <th>Seleccionar</th>
+      <th>Sel. 1</th>
     </thead>
     <tbody>
       <% @tasks.each do |task| %>
         <tr>
-          <td><%= task.name %></td>
+          <td><%= task.name + ' | ' + task.milestone.name %></td>
           <td><%= check_box_tag "predecessor_id[]", task.id %></td>
         </tr>
       <% end -%>
@@ -24,14 +24,14 @@
 <div class="left large-6">
   <table>
     <thead>
-      <th>Seleccionar (1 o más)</th>
+      <th>Sel. (1 o más)</th>
       <th>Tarea dependiente</th>
     </thead>
     <tbody>
       <% @tasks.each do |task| %>
         <tr>
           <td><%= check_box_tag "dependent_ids[]", task.id %></td>
-          <td><%= task.name %></td>
+          <td><%= task.name + ' | ' + task.milestone.name %></td>
         </tr>
       <% end -%>
     </tbody>

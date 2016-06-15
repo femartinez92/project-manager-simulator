@@ -3,15 +3,38 @@
   <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
   <div><strong>Estado para comenzar la simulación: </strong><%= @project.simulator.prevalidate %></div><br>
   <div id="simulation_buttons">
-    <%= link_to 'Ejecutar etapa simulación', execute_step_project_path, class: 'button tiny success' if @can_start_simulation %>
-    <a href="#" data-reveal-id="historia-simulacion" class="radius button tiny info">Historia de la simulación</a>
+    <%- if @can_start_simulation %> 
+      <%= link_to 'Ejecutar etapa simulación', execute_step_project_path, class: 'button tiny success' if @can_start_simulation %>
+      <a href="#" data-reveal-id="historia-simulacion" class="radius button tiny info">Historia de la simulación</a>
+      <%- if @project.monitorable? %>
+        <a href="#" data-reveal-id="negociacion" class="radius button tiny info">Negociar</a>
+      <% end -%>
+    <% end -%>
   </div>
 
 
-  <!-- modal -->
+  <!-- modal historia -->
   <div id="historia-simulacion" class="reveal-modal" data-reveal aria-labelledby="historia-simulacion-title" aria-hidden="true" role="dialog">
-    <h2 id="historia-simulacion-title">Historia de la simulación</h2>
-    <%= simple_format(@simulator.events_description) %>
+    <h2 id="historia-simulacion-title">Resumen de la simulación</h2>
+    <h4>Estado actual: </h4>
+    <p>
+      <strong>Fecha: </strong> <%= @project.start_date + @simulator.day.days if @simulator.day%><br>
+      <strong>Presupuesto inicial: </strong> <%= @simulator.initial_budget %><br>
+      <strong>Duración inicial: </strong> <%= @simulator.original_duration %><br>
+      <strong>Duración actual: </strong> <%= @simulator.actual_duration %><br>
+
+    </p>
+    <h4>Historia</h4>
+    <div>
+      <%= simple_format(@simulator.events_description) %>
+    </div>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  </div>
+
+  <!-- modal negociación -->
+  <div id="negociacion" class="reveal-modal" data-reveal aria-labelledby="negociacion-title" aria-hidden="true" role="dialog">
+    <h2 id="negociacion-title">Negociar</h2>
+
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 </div>

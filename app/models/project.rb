@@ -15,13 +15,13 @@
 #
 
 class Project < ActiveRecord::Base
-  has_many :milestones
-  has_one :cost_payment_plan
-  has_many :stakeholders
-  has_one :budget
-  has_many :requirements
-  has_many :human_resources
-  has_one :simulator
+  has_many :milestones, dependent: :destroy
+  has_one :cost_payment_plan, dependent: :destroy
+  has_many :stakeholders, dependent: :destroy
+  has_one :budget, dependent: :destroy
+  has_many :requirements, dependent: :destroy
+  has_many :human_resources, dependent: :destroy
+  has_one :simulator, dependent: :destroy
 
   scope :from_admin, -> { where(is_admin_project: true) }
   scope :cloned, -> { where(is_admin_project: false) }
@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
     false
   end
 
-  def monitoriable?
+  def monitorable?
     return true if (status == 'Monitoreo y control')
     false
   end
@@ -40,18 +40,32 @@ class Project < ActiveRecord::Base
     human_resources.map { |hr| [hr.description, hr.id] }
   end
 
+  # This method returns the duration of the project in days
+  def duration
+    e_date = start_date
+    all_tasks.each do |task|
+      e_date = task.end_date if task.end_date > e_date
+    end
+    (e_date - start_date).to_i
+  end
+
+  # This method cares of paying the salaries, it verifies that it hasn't
+  # been paid earlier this week.
+  # It's funded by the activities reserve
   def pay_salaries(week)
     cpp = cost_payment_plan
     human_resources.each do |hr|
       nyd = 'Pago sueldo ' + hr.name
       am = hr.salary
-      cl = CostLine.new(name: nyd, description: nyd,
-                        amount: am, real_amount: am,
-                        payment_week: week, real_payment_week: week,
-                        cost_payment_plan_id: cpp.id, status: 'Pagado',
-                        funding_source: 'Costo de actividades')
-      cl.save
-      use_budget(cl)
+      unless CostLine.where(name: nyd, payment_week: week).length > 0
+        cl = CostLine.new(name: nyd, description: nyd,
+                          amount: am, real_amount: am,
+                          payment_week: week, real_payment_week: week,
+                          cost_payment_plan_id: cpp.id, status: 'Pagado',
+                          funding_source: 'Reserva de actividades')
+        cl.save
+        use_budget(cl)
+      end
     end
   end
 
@@ -71,6 +85,8 @@ class Project < ActiveRecord::Base
     bud.save 
   end
 
+  # This method return an array of the project tasks with columns
+  # [:name, :start_date, :end_date]
   def tasks_for_timeline
     tasks_f_time ||= []
     milestones.each do |mile|
@@ -80,7 +96,7 @@ class Project < ActiveRecord::Base
         tasks_f_time << [task.name + ' | '+ mile.name, task.start_date, task.end_date]
       end
     end
-    p tasks_f_time
+    tasks_f_time
   end
 
   def all_tasks
@@ -168,7 +184,7 @@ class Project < ActiveRecord::Base
   # in order to do that all the milestones should be finished
   def win?
     milestones.each do |mile|
-      return false unless mile.status = 'Finished'
+      return false unless mile.status = 'Aprobado'
     end
     true
   end
@@ -178,7 +194,15 @@ class Project < ActiveRecord::Base
   # => Cost for the client increases in 25%
   # => There is a delay of more than 25%
   def loose?
-    return true if budget.total - cost_payment_plan.total <= 0
+    return true if budget.actual_earnings < 0
+    false
   end
 
+  # This method is for restarting thr project
+  def restart
+    budget.restart
+    cost_payment_plan.restart
+    self.update(actual_week: 0, status: 'Inicio')
+    milestones.map { |mile| mile.restart }
+  end
 end

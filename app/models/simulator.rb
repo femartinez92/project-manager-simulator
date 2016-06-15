@@ -14,6 +14,8 @@
 #  updated_at                :datetime         not null
 #  initial_budget            :integer
 #  events_description        :text
+#  original_duration         :integer
+#  actual_duration           :integer
 #
 
 class Simulator < ActiveRecord::Base
@@ -24,8 +26,11 @@ class Simulator < ActiveRecord::Base
   end
 
   def execute_step
-    self.day = 0 if day.nil?
+    project.update(status: 'Ejecución')
+    self.day ||= -1
     self.initial_budget ||= project.budget.total
+    self.original_duration ||= project.duration
+    self.actual_duration ||= project.duration
     self.events_description ||= ''
     save
     hhrr = project.human_resources
@@ -35,11 +40,12 @@ class Simulator < ActiveRecord::Base
     # Generate events
     self.events_description += "EVENTOS \r\n"
     if generate_random <= resource_unavailable_prob
-      hhrr[ran].is_available = false
+      hhrr[ran].update(is_available: false)
       self.events_description += "El empleado #{ hhrr[ran].name }, se ha reportado enfermo \r\n"
     end
     if generate_random <= scope_modify_prob
       req = project.requirements.not_present.first
+      req.update(is_present: true) unless req.nil?
       self.events_description += "Se debe agregar el requisito #{ req.name }\r\n" unless req.nil?
     end
     if generate_random <= plan_change_prob
@@ -66,28 +72,34 @@ class Simulator < ActiveRecord::Base
       # Update the week of the project
       project.update(actual_week: week) if project.actual_week != week
       # Advance active tasks and today starting tasks
-      project.active_tasks.map { |task| task.advance(1) }
-      project.waiting_tasks.map { |task| task.advance(1) if task.start_date == actual_date }
+      project.active_tasks.each do |task|
+        task.advance(1)
+      end
+      project.waiting_tasks.each do |task|
+        task.advance(1) if task.start_date == actual_date
+      end
       # Aprove milestones if needed
       project.milestones.not_aproved.each do |mile|
         if mile.ready?
+          p 'Ready'
           mile.update(status: 'Aprobado')
           self.events_description += "Se ha aprobado el hito: #{mile.name}\r\n"
         end
       end
-      # Pay costs
+      # Pay costs & salaries
       cpp = project.cost_payment_plan
       cpp.cost_lines.unpaid.payment_week(week).each do |cl|
         cl.pay(cl.amount, week)
         project.use_budget(cl)
       end
-      project.pay_salaries(week) if week%4 == 0
+      project.pay_salaries(week) if week%4 == 0 and week%52 != 0
       # Employee returns to work with probability 0.5
       if generate_random < 0.5
-        self.events_description += "El empleado #{ hhrr[ran].name }, ha vuelto a trabajar" unless hhrr[ran].is_available
-        hhrr[ran].is_available = true
+        self.events_description += "El empleado #{ hhrr[ran].name }, ha vuelto a trabajar\r\n" unless hhrr[ran].is_available
+        hhrr[ran].update(is_available: true)
       end
     end
+    project.update(status: 'Monitoreo y control')
     self.save
   end
 
@@ -125,7 +137,7 @@ class Simulator < ActiveRecord::Base
       possible_tasks = pos_mile.tasks.no_fake
       tasks = mile.tasks
       missing_imp_tasks = possible_tasks.length > tasks.no_fake.length
-      return 'Hay tareas importantes no se han agregadas' if missing_imp_tasks
+      return 'Hay tareas importantes no agregadas' if missing_imp_tasks
       tasks.each do |task|
         return 'Te falta estimar la duración de 1 o más tareas para poder comenzar' if !task.estimated?
         return 'Algunas tareas no tienen suficientes recursos humanos' if task.resource_assignations.sum(:time) < task.pm_duration_estimation
@@ -134,20 +146,31 @@ class Simulator < ActiveRecord::Base
     'Ya puedes comenzar la simulación'
   end
 
+  def restart_simulation
+    self.day = nil
+    self.events_description = ''
+    self.save
+    project.restart
+  end
+  # This method determines wether the user can start the simulation
   def can_start?
     return true if prevalidate == 'Ya puedes comenzar la simulación'
     false
   end
 
+  # This method controls the negotiation logic
   def negotiate(type, options = {})
     case type
     when 'increase_budget'
-      options[:amount]
+      project.budget.increase(options[:amount])
+      return "Se ha aceptado el aumento de presupuesto " + options[:message]
     when 'increase_deadline'
-      options[:task_id]
+      actual_duration.update(actual_duration + options[:days])
+      return "Se ha aceptado la extensión de plazo"
     when 'change_requirement'
-      options[:add_requirement_id]
-      options[:delete_requirement_id]
+      Requirement.find(options[:add_requirement_id]).update(is_present: true)
+      Requirement.find(options[:delete_requirement_id]).update(is_present: false)
+      return "Se ha aceptado el cambio de requerimientos"
     end
   end
 

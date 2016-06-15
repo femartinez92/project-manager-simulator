@@ -37,4 +37,9 @@ class CostLine < ActiveRecord::Base
   def paid?
     status == 'Pagado'
   end
+
+  def restart
+    return destroy if name.index('Pago sueldo') == 0
+    update(status: 'Pendiente', real_amount: nil, real_payment_week: nil)
+  end
 end

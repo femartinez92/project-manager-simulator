@@ -23,17 +23,36 @@ class Budget < ActiveRecord::Base
   # This method return the total budget including the company
   # profit.
   def total
+    self.profit ||= 0
+    self.activities_cost ||= 0
+    self.activities_reserve ||= 0
+    self.contingency_reserve ||= 0
+    self.managment_reserve ||= 0
+    save
     activities_cost + activities_reserve + contingency_reserve +
       managment_reserve + profit
   end
 
   def total_used
-    activities_cost_used + activities_reserve_used + contingency_reserve_used +
-    managment_reserve_used
+    activities_cost_used ||= 0
+    activities_reserve_used ||= 0
+    contingency_reserve_used ||= 0
+    managment_reserve_used ||= 0
+    activities_cost_used + activities_reserve_used +
+      contingency_reserve_used + managment_reserve_used
   end
 
   def actual_earnings
     total - total_used
+  end
+
+  def restart
+    update(activities_cost_used: 0, activities_reserve_used: 0,
+           contingency_reserve_used: 0, managment_reserve_used: 0)
+  end
+
+  def increase(amount)
+    update(activities_cost: activities_cost + amount)
   end
 
   def data_for_stacked_column
