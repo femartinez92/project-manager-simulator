@@ -89,12 +89,12 @@ class MilestonesController < ApplicationController
     @tasks ||= []
     @project.milestones.each do |miles|
       miles.tasks.each do |task|
+        task.update(start_date: @project.start_date) if task.start_date.nil?
+        task.update(end_date: task.start_date + task.pm_duration_estimation.days) if task.end_date.nil?
         @tasks << task
       end
     end
     @precedents = Precedent.where(project_id: @project.id)
-    
-
   end
 
   # GET projects/1/precedents/new

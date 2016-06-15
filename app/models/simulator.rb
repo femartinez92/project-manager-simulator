@@ -160,17 +160,30 @@ class Simulator < ActiveRecord::Base
 
   # This method controls the negotiation logic
   def negotiate(type, options = {})
+    self.events_description += 'Negociación '
     case type
-    when 'increase_budget'
-      project.budget.increase(options[:amount])
-      return "Se ha aceptado el aumento de presupuesto " + options[:message]
-    when 'increase_deadline'
-      actual_duration.update(actual_duration + options[:days])
-      return "Se ha aceptado la extensión de plazo"
-    when 'change_requirement'
+    when '1' # 'increase_budget'
+      self.events_description += "de presupuesto \r\n"
+      project.budget.increase(options[:amount].to_i)
+      mensaje = "Se ha aceptado el aumento de presupuesto \r\n"
+      self.events_description += mensaje
+      save
+      return mensaje
+    when '2' # 'increase_deadline'
+      self.events_description += "de plazo \r\n"
+      update(actual_duration: actual_duration + options[:days].to_i)
+      mensaje = "Se ha aceptado la extensión de plazo \r\n"
+      self.events_description += mensaje
+      save
+      return mensaje
+    when '3' # 'change_requirement'
+      self.events_description += "cambio de requisito \r\n"
       Requirement.find(options[:add_requirement_id]).update(is_present: true)
       Requirement.find(options[:delete_requirement_id]).update(is_present: false)
-      return "Se ha aceptado el cambio de requerimientos"
+      mensaje = "Se ha aceptado el cambio de requisitos \r\n"
+      self.events_description += mensaje
+      save
+      return mensaje
     end
   end
 

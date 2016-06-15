@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       post 'configure_simulator' 
       put 'edit_budget'  # /projects/:id/edit_budget
       get 'execute_step'
+      post 'negotiate'
     end
   end
 

@@ -34,7 +34,39 @@
   <!-- modal negociación -->
   <div id="negociacion" class="reveal-modal" data-reveal aria-labelledby="negociacion-title" aria-hidden="true" role="dialog">
     <h2 id="negociacion-title">Negociar</h2>
-
+    <%= form_tag negotiate_project_path do %>
+    <div class="field">
+      <%= label_tag :type, 'Tipo de negociación' %>
+      <%= select_tag :type, options_for_select([['Incrementar presupuesto', 1], ['Incrementar plazo', 2],['Cambiar requisito', 3]]) %>
+    </div>
+    <fieldset>
+      <legend>Incremento de presupuesto</legend>
+      <div class="field">
+        <%= label_tag :amount, 'Monto' %>
+        <%= number_field_tag :amount %>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Incremento de plazo</legend>
+      <div class="field">
+        <%= label_tag :days, 'Atrasar N Días' %>
+        <%= number_field_tag :days, min: 0 %>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Cambiar requisito</legend>
+      <div class="field left large-5">
+        <%= label_tag :add_requirement_id, 'Mantener requisito' %>
+        <%= select_tag :add_requirement_id, options_for_select(@project.requirements.present.pluck(:name, :id)) %>
+      </div>
+      <div class="field left large-1"></div>
+      <div class="field left large-6">
+        <%= label_tag :delete_requirement_id, 'A cambio de quitar' %>
+        <%= select_tag :delete_requirement_id, options_for_select(@project.requirements.present.pluck(:name, :id)) %>
+      </div>
+    </fieldset>
+    <%= submit_tag 'Negociar', class: 'button tiny success' %>
+    <% end -%>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 </div>

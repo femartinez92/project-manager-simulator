@@ -34,10 +34,11 @@ class Budget < ActiveRecord::Base
   end
 
   def total_used
-    activities_cost_used ||= 0
-    activities_reserve_used ||= 0
-    contingency_reserve_used ||= 0
-    managment_reserve_used ||= 0
+    self.activities_cost_used ||= 0
+    self.activities_reserve_used ||= 0
+    self.contingency_reserve_used ||= 0
+    self.managment_reserve_used ||= 0
+    save
     activities_cost_used + activities_reserve_used +
       contingency_reserve_used + managment_reserve_used
   end

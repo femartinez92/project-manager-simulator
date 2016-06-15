@@ -157,7 +157,11 @@ class ProjectsController < ApplicationController
 
   def scope_statement
     unless @admin
-      project_id = current_project_manager.project_type_id
+      if current_project_manager.projects.first.nil?
+        project_id = current_project_manager.project_type_id
+      else
+        project_id = current_project_manager.projects.first.id
+      end
       if ( project_id == 0 or project_id == nil)
         if ( Project.from_admin.first != nil)
           current_project_manager.project_type_id = Project.from_admin.first.id
@@ -219,6 +223,17 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to project_path(@project), notice: 'Etapa simuada' }
     end
+  end
+
+  def negotiate
+    set_project
+    notice = @project.simulator.negotiate(params[:type], { amount: params[:amount], days: params[:days],
+                                  add_requirement_id: params[:add_requirement_id],
+                                  delete_requirement_id: params[:delete_requirement_id] })
+    respond_to do |format|
+      format.html { redirect_to project_path(@project), notice: notice }
+    end
+
   end
 
   private

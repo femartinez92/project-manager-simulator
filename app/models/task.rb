@@ -133,7 +133,7 @@ class Task < ActiveRecord::Base
   # ends later than it was supposed 
   # @ds : days of delay, if negative => advance (not implemented yet)
   def update_end_date(ds)
-    actual_duration = (end_date -start_date).to_i
+    actual_duration = (end_date - start_date).to_i
     days_worked = advance_percentage / 100.0 * (actual_duration) 
     if delay_end(end_date + ds.days)
       self.update(advance_percentage: (days_worked / (actual_duration + ds)).to_i)
