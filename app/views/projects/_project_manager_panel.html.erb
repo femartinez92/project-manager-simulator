@@ -1,17 +1,22 @@
 <div class="row panel">
-  <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
-  <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
-  <div><strong>Estado para comenzar la simulación: </strong><%= @project.simulator.prevalidate %></div><br>
-  <div id="simulation_buttons">
-    <%- if @can_start_simulation %> 
-      <%= link_to 'Ejecutar etapa simulación', execute_step_project_path, class: 'button tiny success' if @can_start_simulation %>
-      <a href="#" data-reveal-id="historia-simulacion" class="radius button tiny info">Historia de la simulación</a>
-      <%- if @project.monitorable? %>
-        <a href="#" data-reveal-id="negociacion" class="radius button tiny info">Negociar</a>
+  <%- if @project.win? %>
+    <h4>Felicitaciones!! El proyecto ha resultado exitoso :)</h4>
+  <%- elsif @project.loose? %>
+    <h5>Lamentamos informate que los clientes han cancelado el proyecto</h5>
+  <% else %>
+    <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
+    <%= link_to 'Adquirir equipo de proyecto', human_resources_shop_path, class: 'button tiny info' %>
+    <div><strong>Estado para comenzar la simulación: </strong><%= @project.simulator.prevalidate %></div><br>
+    <div id="simulation_buttons">
+      <%- if @can_start_simulation %> 
+        <%= link_to 'Ejecutar etapa simulación', execute_step_project_path, class: 'button tiny success' if @can_start_simulation %>
+        <%- if @project.monitorable? %>
+        <a href="#" data-reveal-id="historia-simulacion" class="radius button tiny info">Historia de la simulación</a>
+          <a href="#" data-reveal-id="negociacion" class="radius button tiny info">Negociar</a>
+        <% end -%>
       <% end -%>
-    <% end -%>
-  </div>
-
+    </div>
+  <% end -%>
 
   <!-- modal historia -->
   <div id="historia-simulacion" class="reveal-modal" data-reveal aria-labelledby="historia-simulacion-title" aria-hidden="true" role="dialog">

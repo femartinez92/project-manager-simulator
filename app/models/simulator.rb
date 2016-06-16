@@ -73,9 +73,13 @@ class Simulator < ActiveRecord::Base
       project.update(actual_week: week) if project.actual_week != week
       # Advance active tasks and today starting tasks
       project.active_tasks.each do |task|
+        self.events_description += task.name + " avanza de " + task.advance_percentage.to_s
         task.advance(1)
+        self.events_description += " a " + task.advance_percentage.to_s + "\r\n"
+
       end
       project.waiting_tasks.each do |task|
+        self.events_description += "Se activa la tarea: " + task.name + "\r\n"
         task.advance(1) if task.start_date == actual_date
       end
       # Aprove milestones if needed
@@ -95,7 +99,7 @@ class Simulator < ActiveRecord::Base
       project.pay_salaries(week) if week%4 == 0 and week%52 != 0
       # Employee returns to work with probability 0.5
       if generate_random < 0.5
-        self.events_description += "El empleado #{ hhrr[ran].name }, ha vuelto a trabajar\r\n" unless hhrr[ran].is_available
+        self.events_description += "#{ hhrr[ran].name }, ha vuelto a trabajar\r\n" unless hhrr[ran].is_available
         hhrr[ran].update(is_available: true)
       end
     end

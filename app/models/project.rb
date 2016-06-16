@@ -93,7 +93,7 @@ class Project < ActiveRecord::Base
       mile.tasks.each do |task|
         task.update(start_date: start_date) if task.start_date.nil?
         task.update(end_date: task.start_date + task.pm_duration_estimation.days) if task.end_date.nil?
-        tasks_f_time << [task.name + ' | '+ mile.name, task.start_date, task.end_date]
+        tasks_f_time << [task.name + ' | ' + mile.name + ' | ' + task.advance_percentage.to_s + "% ", task.start_date, task.end_date]
       end
     end
     tasks_f_time
@@ -184,7 +184,7 @@ class Project < ActiveRecord::Base
   # in order to do that all the milestones should be finished
   def win?
     milestones.each do |mile|
-      return false unless mile.status = 'Aprobado'
+      return false unless mile.status == 'Aprobado'
     end
     true
   end
@@ -195,6 +195,9 @@ class Project < ActiveRecord::Base
   # => There is a delay of more than 25%
   def loose?
     return true if budget.actual_earnings < 0
+    return true if budget.total_used > 1.25 * simulator.initial_budget
+    return true if simulator.actual_duration > 1.25 * simulator.original_duration
+    return true if simulator.day and simulator.day > simulator.actual_duration
     false
   end
 
