@@ -195,8 +195,8 @@ class Project < ActiveRecord::Base
   # => There is a delay of more than 25%
   def loose?
     return true if budget.actual_earnings < 0
-    return true if budget.total_used > 1.25 * simulator.initial_budget
-    return true if simulator.actual_duration > 1.25 * simulator.original_duration
+    return true if simulator.initial_budget and budget.total_used > 1.25 * simulator.initial_budget
+    return true if simulator.actual_duration and simulator.actual_duration > 1.25 * simulator.original_duration
     return true if simulator.day and simulator.day > simulator.actual_duration
     false
   end
