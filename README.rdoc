@@ -19,11 +19,10 @@ git pull origin master
 RAILS_ENV=production bundle install
 RAILS_ENV=production rake db:migrate
 RAILS_ENV=production rake assets:precompile
-ps aux | grep unicorn
-//Para reiniciar el proceso sin dejar de servir requests
-kill -s USR2 <pid de master>
-kill -s WINCH <pid de master> //Esto elimina los workers
-kill -s QUIT  <pid de master> // Esto elimina el master antiguo
+
+kill -s USR2 $(cat ~/apps/shared/pids/unicorn.pid)
+kill -s WINCH $(cat ~/apps/shared/pids/unicorn.pid.oldbin) 
+kill -s QUIT  $(cat ~/apps/shared/pids/unicorn.pid.oldbin) 
 
 // Para  correr por priemra vez
 unicorn_rails -c /home/administrator/apps/project-manager-simulator/config/unicorn.rb -D -E production

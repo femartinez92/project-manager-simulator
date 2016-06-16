@@ -1,7 +1,7 @@
 <div class="row panel">
-  <%- if @project.win? %>
+  <%- if @project.win? and @can_start_simulation %>
     <h4>Felicitaciones!! El proyecto ha resultado exitoso :)</h4>
-  <%- elsif @project.loose? %>
+  <%- elsif @project.loose? and @can_start_simulation %>
     <h5>Lamentamos informate que los clientes han cancelado el proyecto</h5>
   <% else %>
     <%= link_to 'Ver enunciado de alcance', scope_statement_path, class: 'button info tiny' %> 
